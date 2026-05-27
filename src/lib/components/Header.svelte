@@ -2,8 +2,20 @@
 
 <script lang="ts">
 	import Modal from './Modal.svelte';
+	import { downloadAllFiles } from '$lib/utils/csvExporter';
+	import { csvStore } from '$lib/state/editorState.svelte';
+
+	let { groupName = '', songName = '' } = $props();
 
 	let showModal = $state(false);
+
+	function handleExport() {
+		if (!groupName || !songName) {
+			alert('グループ名と曲名を入力してください');
+			return;
+		}
+		downloadAllFiles(csvStore.rows, groupName, songName);
+	}
 </script>
 
 <header class="flex bg-blue-400 px-6 py-3">
@@ -16,7 +28,12 @@
 	>
 		?
 	</button>
-	<button id="DL" type="button" class="ml-5 rounded-lg bg-green-400 p-2 text-xl">
+	<button
+		id="DL"
+		type="button"
+		class="ml-5 rounded-lg bg-green-400 p-2 text-xl"
+		onclick={handleExport}
+	>
 		Download CSV files
 	</button>
 </header>

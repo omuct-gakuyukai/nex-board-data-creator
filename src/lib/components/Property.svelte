@@ -1,6 +1,5 @@
 <script lang="ts">
-	let groupName = $state('');
-	let songName = $state('');
+	let { groupName = $bindable(''), songName = $bindable('') } = $props();
 	const fileNameForMain = $derived(groupName + '_' + songName + '_main.csv');
 	const fileNameForSub = $derived(groupName + '_' + songName + '_sub.csv');
 </script>
