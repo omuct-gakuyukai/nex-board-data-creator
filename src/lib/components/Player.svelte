@@ -12,13 +12,13 @@
 <div class="my-2 h-45 w-80 rounded border border-gray-300">
 	<div class="flex border-b bg-gray-100">
 		<button
-			class={`flex-1 px-3 py-2 ${sourceMode === 'youtube' ? 'border-b-2 border-red-500 font-bold' : ''}`}
+			class={`flex-1 px-3 py-2 ${sourceMode === 'youtube' ? 'border-b-2 border-red-500 font-bold outline-0' : ''}`}
 			onclick={() => (sourceMode = 'youtube')}
 		>
 			YouTube
 		</button>
 		<button
-			class={`flex-1 px-3 py-2 ${sourceMode === 'file' ? 'border-b-2 border-blue-500 font-bold' : ''}`}
+			class={`flex-1 px-3 py-2 ${sourceMode === 'file' ? 'border-b-2 border-blue-500 font-bold outline-0' : ''}`}
 			onclick={() => (sourceMode = 'file')}
 		>
 			ファイル
