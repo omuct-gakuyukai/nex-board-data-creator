@@ -1,5 +1,89 @@
 import type { Row } from '$lib/types/csv';
-class CsvStore {
+import type { YTPlayer } from '$lib/utils/youtubeLoader';
+
+export interface MediaSource {
+	type: 'youtube' | 'file';
+	youtubeId?: string; // YouTube動画ID
+	fileUrl?: string; // ローカルファイルURL
+	fileName?: string; // ファイル名
+	mimeType?: string; // 'video/mp4' | 'audio/mpeg' など
+}
+
+class PlayerState {
+	// メディア情報
+	mediaSource = $state<MediaSource | null>(null);
+
+	// 再生制御
+	isPlaying = $state(false);
+	currentTime = $state(0); // 秒単位
+	duration = $state(0); // 秒単位
+	volume = $state(0.8);
+
+	// プレイヤーリファレンス（video/audio 要素またはYouTube Player）
+	playerRef = $state<HTMLVideoElement | HTMLAudioElement | YTPlayer | null>(null);
+
+	// WASM アプリとの連携
+	wasmCallback = $state<((time: number) => void) | null>(null);
+
+	setMediaSource(source: MediaSource) {
+		this.mediaSource = source;
+		this.currentTime = 0;
+		this.duration = 0;
+	}
+
+	updateCurrentTime(time: number) {
+		this.currentTime = time;
+		// WASM アプリに時間を通知
+		this.wasmCallback?.(time);
+	}
+
+	setDuration(duration: number) {
+		this.duration = duration;
+	}
+
+	play() {
+		this.isPlaying = true;
+		if (this.playerRef) {
+			if ('playVideo' in this.playerRef && typeof this.playerRef.playVideo === 'function') {
+				// YouTube Player
+				this.playerRef.playVideo();
+			} else if ('play' in this.playerRef && typeof this.playerRef.play === 'function') {
+				// HTML5 video/audio
+				this.playerRef.play();
+			}
+		}
+	}
+
+	pause() {
+		this.isPlaying = false;
+		if (this.playerRef) {
+			if ('pauseVideo' in this.playerRef && typeof this.playerRef.pauseVideo === 'function') {
+				// YouTube Player
+				this.playerRef.pauseVideo();
+			} else if ('pause' in this.playerRef && typeof this.playerRef.pause === 'function') {
+				// HTML5 video/audio
+				this.playerRef.pause();
+			}
+		}
+	}
+
+	seek(time: number) {
+		this.currentTime = time;
+		if (this.playerRef) {
+			if ('currentTime' in this.playerRef) {
+				// HTML5 video/audio
+				this.playerRef.currentTime = time;
+			} else if ('seekTo' in this.playerRef && typeof this.playerRef.seekTo === 'function') {
+				// YouTube Player
+				this.playerRef.seekTo(time);
+			}
+		}
+		this.wasmCallback?.(time);
+	}
+}
+class EditorState {
+	groupName = $state('');
+	songName = $state('');
 	rows = $state<Row[]>([]);
 	columns = [
 		'start',
@@ -17,6 +101,8 @@ class CsvStore {
 	] as const;
 
 	focusedIndex = $state<number | null>(null);
+
+	playerState = new PlayerState();
 
 	constructor() {
 		this.rows = [this.createEmptyRow()];
@@ -50,4 +136,4 @@ class CsvStore {
 		}
 	}
 }
-export const csvStore = new CsvStore();
+export const editorState = new EditorState();

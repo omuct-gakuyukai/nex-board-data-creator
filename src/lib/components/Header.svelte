@@ -3,40 +3,51 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
 	import { downloadAllFiles } from '$lib/utils/csvExporter';
-	import { csvStore } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/state/editorState.svelte';
 	import { parseEditCSV } from '$lib/utils/csvImporter';
+	import { parseFileName } from '$lib/utils/fileNameparser';
 
 	async function handleImport(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0];
 		if (!file) return;
 
-		const rows = await parseEditCSV(file);
-		csvStore.rows = rows; // 状態更新
+		try {
+			const parsed = parseFileName(file.name);
+			if (parsed) {
+				editorState.groupName = parsed.groupName;
+				editorState.songName = parsed.songName;
+			}
+			const rows = await parseEditCSV(file);
+			editorState.rows = rows;
+		} catch (error) {
+			console.error('インポートエラー:', error);
+			alert('ファイルのインポートに失敗しました');
+		}
 	}
-
-	let { groupName = '', songName = '' } = $props();
 
 	let showModal = $state(false);
 
 	function handleExport() {
-		if (!groupName || !songName) {
+		if (!editorState.groupName || !editorState.songName) {
 			alert('グループ名と曲名を入力してください');
 			return;
 		}
-		downloadAllFiles(csvStore.rows, groupName, songName);
+		downloadAllFiles(editorState.rows, editorState.groupName, editorState.songName);
 	}
 </script>
 
 <header class="flex bg-blue-400 px-6 py-3">
 	<h2 class="text-4xl font-bold">DataCreator for nex-board</h2>
-	<input
-		type="file"
-		accept=".csv"
-		class="ml-auto w-fit rounded-lg border bg-white p-2 outline-0"
-		onchange={handleImport}
-	/>
+	<input type="file" accept=".csv" onchange={handleImport} id="import-csv" hidden />
 	<button
-		class="ml-15 h-11 w-11 rounded-full border-2 bg-white text-3xl"
+		type="button"
+		class="ml-auto rounded-lg bg-blue-300 p-2 text-xl"
+		onclick={() => document.getElementById('import-csv')?.click()}
+	>
+		Upload CSV
+	</button>
+	<button
+		class="ml-10 h-11 w-11 rounded-full border-2 bg-white text-3xl"
 		onclick={() => {
 			showModal = true;
 		}}
@@ -46,7 +57,7 @@
 	<button
 		id="DL"
 		type="button"
-		class="ml-5 rounded-lg bg-green-400 p-2 text-xl"
+		class="ml-10 rounded-lg bg-green-400 p-2 text-xl"
 		onclick={handleExport}
 	>
 		Download CSV files

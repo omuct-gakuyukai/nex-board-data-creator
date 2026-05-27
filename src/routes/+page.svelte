@@ -6,14 +6,11 @@
 	import Property from '$lib/components/Property.svelte';
 	import Stage from '$lib/components/Stage.svelte';
 	import Timer from '$lib/components/Timer.svelte';
-
-	let groupName = $state('');
-	let songName = $state('');
 </script>
 
-<Header {groupName} {songName} />
+<Header />
 <div class="flex">
-	<Property bind:groupName bind:songName />
+	<Property />
 	<Timer />
 </div>
 

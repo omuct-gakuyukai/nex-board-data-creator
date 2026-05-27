@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { csvStore } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/state/editorState.svelte';
 	import Toolbar from './editor/Toolbar.svelte';
 
 	const placeHolder = {
-		start: '分:秒',
+		start: '秒',
 		length: '秒',
 		content: '内容'
 	};
@@ -73,12 +73,12 @@
 				</tr>
 			</thead>
 			<tbody class="bg-gray-300">
-				{#each csvStore.rows as row, rowIndex (row.id)}
+				{#each editorState.rows as row, rowIndex (row.id)}
 					<tr
-						onfocusin={() => (csvStore.focusedIndex = rowIndex)}
-						class={csvStore.focusedIndex === rowIndex ? 'bg-blue-100' : ''}
+						onfocusin={() => (editorState.focusedIndex = rowIndex)}
+						class={editorState.focusedIndex === rowIndex ? 'bg-blue-100' : ''}
 					>
-						{#each csvStore.columns as column (column)}
+						{#each editorState.columns as column (column)}
 							{#if column == 'start' || column == 'length' || column == 'content'}
 								<td class={`${column != 'content' ? 'max-w-10' : 'max-w-50'} border p-1`}>
 									<input
