@@ -7,9 +7,12 @@ class CsvStore {
 		'monitor',
 		'type',
 		'content',
-		'right',
-		'left',
-		'foot',
+		'rightFront',
+		'rightMiddle',
+		'rightBack',
+		'leftFront',
+		'leftMiddle',
+		'leftBack',
 		'back'
 	] as const;
 
@@ -27,9 +30,12 @@ class CsvStore {
 			monitor: '',
 			type: '',
 			content: '',
-			right: '',
-			left: '',
-			foot: '',
+			rightFront: '',
+			rightMiddle: '',
+			rightBack: '',
+			leftFront: '',
+			leftMiddle: '',
+			leftBack: '',
 			back: ''
 		};
 	}

@@ -4,6 +4,15 @@
 	import Modal from './Modal.svelte';
 	import { downloadAllFiles } from '$lib/utils/csvExporter';
 	import { csvStore } from '$lib/state/editorState.svelte';
+	import { parseEditCSV } from '$lib/utils/csvImporter';
+
+	async function handleImport(event: Event) {
+		const file = (event.target as HTMLInputElement).files?.[0];
+		if (!file) return;
+
+		const rows = await parseEditCSV(file);
+		csvStore.rows = rows; // 状態更新
+	}
 
 	let { groupName = '', songName = '' } = $props();
 
@@ -20,8 +29,14 @@
 
 <header class="flex bg-blue-400 px-6 py-3">
 	<h2 class="text-4xl font-bold">DataCreator for nex-board</h2>
+	<input
+		type="file"
+		accept=".csv"
+		class="ml-auto w-fit rounded-lg border bg-white p-2 outline-0"
+		onchange={handleImport}
+	/>
 	<button
-		class="ml-auto h-11 w-11 rounded-full border-2 bg-white text-3xl"
+		class="ml-15 h-11 w-11 rounded-full border-2 bg-white text-3xl"
 		onclick={() => {
 			showModal = true;
 		}}

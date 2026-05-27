@@ -2,7 +2,7 @@ import Papa from 'papaparse';
 import type { Row } from '$lib/types/csv';
 
 export function generateCSVFiles(rows: Row[]) {
-	// main.csv: monitor=main のみ、right/left/foot/back は削除
+	// main.csv: monitor=main のみ、表示要素を含めて出力
 	const mainRows = rows
 		.filter((row) => row.monitor === 'main')
 		.map((row) => ({
@@ -10,10 +10,17 @@ export function generateCSVFiles(rows: Row[]) {
 			length: row.length,
 			monitor: row.monitor,
 			type: row.type,
-			content: row.content
+			content: row.content,
+			rightFront: row.rightFront,
+			rightMiddle: row.rightMiddle,
+			rightBack: row.rightBack,
+			leftFront: row.leftFront,
+			leftMiddle: row.leftMiddle,
+			leftBack: row.leftBack,
+			back: row.back
 		}));
 
-	// sub.csv: monitor=sub のみ、right/left/foot/back は削除
+	// sub.csv: monitor=sub のみ、表示要素を含めて出力
 	const subRows = rows
 		.filter((row) => row.monitor === 'sub')
 		.map((row) => ({
@@ -21,15 +28,25 @@ export function generateCSVFiles(rows: Row[]) {
 			length: row.length,
 			monitor: row.monitor,
 			type: row.type,
-			content: row.content
+			content: row.content,
+			rightFront: row.rightFront,
+			rightMiddle: row.rightMiddle,
+			rightBack: row.rightBack,
+			leftFront: row.leftFront,
+			leftMiddle: row.leftMiddle,
+			leftBack: row.leftBack,
+			back: row.back
 		}));
 
-	// light.csv: start + right/left/foot/back のみ
+	// light.csv: start と表示要素のみ
 	const lightRows = rows.map((row) => ({
 		start: row.start,
-		right: row.right,
-		left: row.left,
-		foot: row.foot,
+		rightFront: row.rightFront,
+		rightMiddle: row.rightMiddle,
+		rightBack: row.rightBack,
+		leftFront: row.leftFront,
+		leftMiddle: row.leftMiddle,
+		leftBack: row.leftBack,
 		back: row.back
 	}));
 
@@ -40,9 +57,12 @@ export function generateCSVFiles(rows: Row[]) {
 		monitor: row.monitor,
 		type: row.type,
 		content: row.content,
-		right: row.right,
-		left: row.left,
-		foot: row.foot,
+		rightFront: row.rightFront,
+		rightMiddle: row.rightMiddle,
+		rightBack: row.rightBack,
+		leftFront: row.leftFront,
+		leftMiddle: row.leftMiddle,
+		leftBack: row.leftBack,
 		back: row.back
 	}));
 
