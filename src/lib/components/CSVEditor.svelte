@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { csvStore } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/state/editorState.svelte';
 	import Toolbar from './editor/Toolbar.svelte';
 
 	const placeHolder = {
-		start: '開始時間(分:秒)',
-		length: '表示時間(秒)',
+		start: '秒',
+		length: '秒',
 		content: '内容'
 	};
 	const options = {
@@ -19,15 +19,27 @@
 			roop: 'ループ表示',
 			static: '固定表示'
 		},
-		right: {
+		rightFront: {
 			default: '色を選択',
 			red: '赤'
 		},
-		left: {
+		rightMiddle: {
 			default: '色を選択',
 			red: '赤'
 		},
-		foot: {
+		rightBack: {
+			default: '色を選択',
+			red: '赤'
+		},
+		leftFront: {
+			default: '色を選択',
+			red: '赤'
+		},
+		leftMiddle: {
+			default: '色を選択',
+			red: '赤'
+		},
+		leftBack: {
 			default: '色を選択',
 			red: '赤'
 		},
@@ -46,26 +58,29 @@
 		<table class="w-full p-5 pt-0">
 			<thead class="sticky top-10 z-10 bg-gray-200 shadow-sm">
 				<tr>
-					<th class="border p-1">開始時間</th>
-					<th class="border p-1">表示時間</th>
-					<th class="border p-1">モニター</th>
-					<th class="border p-1">表示形式</th>
-					<th class="border p-1">内容</th>
-					<th class="border p-1">右</th>
-					<th class="border p-1">左</th>
-					<th class="border p-1">フット</th>
-					<th class="border p-1">バック</th>
+					<th class="border py-1">開始時間</th>
+					<th class="border py-1">表示時間</th>
+					<th class="border py-1">モニター</th>
+					<th class="border py-1">表示形式</th>
+					<th class="border py-1">内容</th>
+					<th class="border py-1">右前</th>
+					<th class="border py-1">右中</th>
+					<th class="border py-1">右後</th>
+					<th class="border py-1">左前</th>
+					<th class="border py-1">左中</th>
+					<th class="border py-1">左後</th>
+					<th class="border py-1">バック</th>
 				</tr>
 			</thead>
 			<tbody class="bg-gray-300">
-				{#each csvStore.rows as row, rowIndex (row.id)}
+				{#each editorState.rows as row, rowIndex (row.id)}
 					<tr
-						onfocusin={() => (csvStore.focusedIndex = rowIndex)}
-						class={csvStore.focusedIndex === rowIndex ? 'bg-blue-100' : ''}
+						onfocusin={() => (editorState.focusedIndex = rowIndex)}
+						class={editorState.focusedIndex === rowIndex ? 'bg-blue-100' : ''}
 					>
-						{#each csvStore.columns as column (column)}
+						{#each editorState.columns as column (column)}
 							{#if column == 'start' || column == 'length' || column == 'content'}
-								<td class={`${column != 'content' ? 'max-w-19' : 'max-w-200'} border p-1`}>
+								<td class={`${column != 'content' ? 'max-w-10' : 'max-w-50'} border p-1`}>
 									<input
 										bind:value={row[column]}
 										placeholder={`${placeHolder[column]}`}
@@ -74,7 +89,7 @@
 								</td>
 							{:else}
 								<td
-									class={`${column != 'monitor' && column != 'type' ? 'max-w-14' : 'max-w-18'} border p-1`}
+									class={`${column != 'monitor' && column != 'type' ? 'max-w-13' : 'max-w-20'} border p-1`}
 								>
 									<select
 										name={column}
