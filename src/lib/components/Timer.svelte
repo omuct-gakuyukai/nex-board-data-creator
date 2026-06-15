@@ -3,12 +3,11 @@
 
 	const playerState = editorState.playerState;
 
-	// 秒 → "秒 分:秒/分:秒" に変換
 	function formatTime(seconds: number): string {
 		const totalSeconds = Math.floor(seconds);
 		const mins = Math.floor(seconds / 60);
 		const secs = Math.floor(seconds % 60);
-		return `${totalSeconds}秒 ${mins}:${secs.toString().padStart(2, '0')}`;
+		return `${totalSeconds}秒 | ${mins}:${secs.toString().padStart(2, '0')}`;
 	}
 </script>
 
@@ -16,7 +15,7 @@
 	<div class="my-auto mr-5 text-base text-gray-600">再生時間</div>
 	<div class="flex flex-col">
 		<div class="text-xl">
-			{formatTime(playerState.currentTime)} / {Math.floor(playerState.duration / 60)}:{Math.floor(
+			{formatTime(playerState.currentTime)}/{Math.floor(playerState.duration / 60)}:{Math.floor(
 				playerState.duration % 60
 			)
 				.toString()
