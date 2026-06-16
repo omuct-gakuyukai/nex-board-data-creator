@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { editorState } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/states/editorState.svelte';
 	import { MediaUploader } from '$lib/utils/mediaUploader';
 
 	async function handleFileSelect(event: Event) {

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { editorState } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/states/editorState.svelte';
 	import Toolbar from './editor/Toolbar.svelte';
 
 	const placeHolder = {
 		start: '秒',
-		length: '秒',
+		duration: '秒',
 		content: '内容'
 	};
 	const options = {
@@ -18,34 +18,6 @@
 			slide: 'スライド表示',
 			roop: 'ループ表示',
 			static: '固定表示'
-		},
-		rightFront: {
-			default: '色を選択',
-			red: '赤'
-		},
-		rightMiddle: {
-			default: '色を選択',
-			red: '赤'
-		},
-		rightBack: {
-			default: '色を選択',
-			red: '赤'
-		},
-		leftFront: {
-			default: '色を選択',
-			red: '赤'
-		},
-		leftMiddle: {
-			default: '色を選択',
-			red: '赤'
-		},
-		leftBack: {
-			default: '色を選択',
-			red: '赤'
-		},
-		back: {
-			default: '色を選択',
-			red: '赤'
 		}
 	};
 </script>
@@ -63,13 +35,6 @@
 					<th class="border py-1">モニター</th>
 					<th class="border py-1">表示形式</th>
 					<th class="border py-1">内容</th>
-					<th class="border py-1">右前</th>
-					<th class="border py-1">右中</th>
-					<th class="border py-1">右後</th>
-					<th class="border py-1">左前</th>
-					<th class="border py-1">左中</th>
-					<th class="border py-1">左後</th>
-					<th class="border py-1">バック</th>
 				</tr>
 			</thead>
 			<tbody class="bg-gray-300">
@@ -79,7 +44,7 @@
 						class={editorState.focusedIndex === rowIndex ? 'bg-blue-100' : ''}
 					>
 						{#each editorState.columns as column (column)}
-							{#if column == 'start' || column == 'length' || column == 'content'}
+							{#if column == 'start' || column == 'duration' || column == 'content'}
 								<td class={`${column != 'content' ? 'max-w-10' : 'max-w-50'} border p-1`}>
 									<input
 										bind:value={row[column]}

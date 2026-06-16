@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { editorState } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/states/editorState.svelte';
 	const fileNameForMain = $derived(
 		editorState.groupName + '_' + editorState.songName + '_main.csv'
 	);

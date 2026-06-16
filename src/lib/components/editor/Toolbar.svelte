@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { editorState } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/states/editorState.svelte';
 </script>
 
 <div class="flex w-full border-x border-t bg-gray-100 px-5 py-2">

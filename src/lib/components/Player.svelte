@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { editorState } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/states/editorState.svelte';
 	import YouTubePlayer from './player/YouTubePlayer.svelte';
 	import LocalMediaPlayer from './player/LocalMediaPlayer.svelte';
 	import YouTubeInput from './player/YouTubeInput.svelte';
@@ -75,6 +75,22 @@
 					playerState.seek(+value);
 				}}
 				class="flex-1"
+			/><input
+				type="range"
+				min="0"
+				max="100"
+				value="100"
+				oninput={(e) => {
+					const volume = +(e.target as HTMLInputElement).value;
+					const ref = playerState.playerRef;
+
+					if (ref && 'setVolume' in ref) {
+						ref.setVolume(volume);
+					} else if (ref && 'volume' in ref) {
+						ref.volume = volume / 100;
+					}
+				}}
+				class="w-20"
 			/>
 		</div>
 	{/if}

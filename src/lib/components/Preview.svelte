@@ -1,17 +1,323 @@
-<div class="flex justify-center px-13">
-	<div class="flex flex-col">
-		<div class="flex">
-			<div class="mx-1 h-45 w-80 border bg-gray-400 text-4xl">Placeholder</div>
-			<div class="mx-1 h-45 w-80 border bg-gray-400 text-4xl">Placeholder</div>
-		</div>
-		<div class="mx-auto my-2 max-w-fit bg-gray-300 px-25 py-2">sub</div>
+<script lang="ts">
+	import { editorState } from '$lib/states/editorState.svelte';
+
+	// --- 1. 仮想解像度と巨大フォントサイズの定義 ---
+	const SUB_VIRTUAL_WIDTH = 1920 * 2; // 3840px (左側)
+	const MAIN_VIRTUAL_WIDTH = 1920 * 3; // 5760px (右側)
+	const TOTAL_VIRTUAL_WIDTH = SUB_VIRTUAL_WIDTH + MAIN_VIRTUAL_WIDTH; // 9600px
+	const VIRTUAL_HEIGHT = 1080;
+	const VIRTUAL_TEXT_SIZE = 1060;
+	const PREVIEW_GAP = 24;
+
+	let containerWidth = $state(0);
+
+	let availableWidth = $derived(Math.max(0, containerWidth - PREVIEW_GAP));
+	let globalScale = $derived(availableWidth > 0 ? availableWidth / TOTAL_VIRTUAL_WIDTH : 1);
+
+	/*
+	// ─────────────────────────────────────────────────────────
+	// 【新機軸】完全に独立したプレビュー専用の時計（独自クロック）
+	// ─────────────────────────────────────────────────────────
+	let animatedTime = $state(0);
+
+	$effect(() => {
+		const isPlaying = editorState.playerState.isPlaying;
+		const pTime = editorState.playerState.currentTime;
+
+		// ① 動画が停止中の場合
+		if (!isPlaying) {
+			// ループは回さず、動画の正確な停止時間にピタッと同期させる
+			animatedTime = pTime;
+			return;
+		}
+
+		// ② シーク（ジャンプ）検知
+		// 動画の再生時間と独自クロックが 0.8秒以上 ズレた場合は「ユーザーがシークバーを飛ばした」と判定して強制同期
+		if (Math.abs(animatedTime - pTime) > 0.8) {
+			animatedTime = pTime;
+		}
+
+		// ③ 再生中：独自クロックの惰性進行ループ
+		let lastTimestamp = performance.now();
+		let animationFrameId: number;
+
+		function updateClock(now: number) {
+			const deltaSeconds = (now - lastTimestamp) / 1000;
+			lastTimestamp = now;
+
+			// 動画プレイヤーの currentTime 更新を完全に無視して、
+			// モニターのリフレッシュレート通りに自立して時間を進める
+			animatedTime += deltaSeconds;
+
+			animationFrameId = requestAnimationFrame(updateClock);
+		}
+
+		animationFrameId = requestAnimationFrame(updateClock);
+
+		return () => {
+			cancelAnimationFrame(animationFrameId); // クリーンアップ
+		};
+	});
+	// ─────────────────────────────────────────────────────────
+	*/
+
+	// ─────────────────────────────────────────────────────────
+	// 【改善版】プレイヤーの生の時間を毎フレーム直接吸い上げるロジック
+	// ─────────────────────────────────────────────────────────
+	let animatedTime = $state(0);
+
+	$effect(() => {
+		const isPlaying = editorState.playerState.isPlaying;
+		const pTime = editorState.playerState.currentTime;
+		const playerRef = editorState.playerState.playerRef;
+
+		// ① 動画が停止中の場合、またはプレイヤーへの参照がまだ無い場合
+		if (!isPlaying || !playerRef) {
+			// 通常の粗いイベント通知の時間(pTime)にピタッと同期させて終了
+			animatedTime = pTime;
+			return;
+		}
+
+		// ② 再生中：プレイヤーの「真の現在時間」を毎フレーム直接ポーリングする
+		let animationFrameId: number;
+
+		function syncWithPlayerFrame() {
+			if (!playerRef) return;
+
+			let exactTime = animatedTime;
+
+			// プレイヤーのリファレンスから直接、ミリ秒単位の正確な時間を取得する
+			if ('currentTime' in playerRef) {
+				// HTML5 video / audio 要素の場合
+				exactTime = playerRef.currentTime;
+			} else if ('getCurrentTime' in playerRef && typeof playerRef.getCurrentTime === 'function') {
+				// YouTube Player の場合
+				exactTime = playerRef.getCurrentTime();
+			}
+
+			// 取得した「生の時間」をそのままプレビューの基準時間にする
+			animatedTime = exactTime;
+
+			animationFrameId = requestAnimationFrame(syncWithPlayerFrame);
+		}
+
+		animationFrameId = requestAnimationFrame(syncWithPlayerFrame);
+
+		return () => {
+			cancelAnimationFrame(animationFrameId); // クリーンアップ
+		};
+	});
+	// ─────────────────────────────────────────────────────────
+
+	// --- 2. 行データの共通パース関数 ---
+	function parseRow(row: (typeof editorState.rows)[0]) {
+		const start = parseFloat(row.start) || 0;
+		let duration = parseFloat(row.duration) || 0;
+		const type = row.type?.trim() || 'slide';
+		const content = row.content || '';
+
+		if (type === 'static') {
+			duration = 0;
+		} else if (type === 'roop' || type === 'loop') {
+			duration = 1200;
+		}
+
+		const isLoop = duration >= 1000;
+		return { ...row, start, type, duration, content, isLoop };
+	}
+
+	// --- 3. monitorごとにタイムラインを完全分離 ---
+	let subItems = $derived.by(() => {
+		return editorState.rows
+			.filter((row) => row.monitor?.trim() === 'sub')
+			.map(parseRow)
+			.sort((a, b) => a.start - b.start);
+	});
+
+	let mainItems = $derived.by(() => {
+		return editorState.rows
+			.filter((row) => row.monitor?.trim() === 'main')
+			.map(parseRow)
+			.sort((a, b) => a.start - b.start);
+	});
+
+	// --- 4. 該当アイテムの算出 ---
+	function getCurrentItem(items: ReturnType<typeof parseRow>[], currentTime: number) {
+		if (items.length === 0) return null;
+
+		const activeItems = items.filter((i) => i.start <= currentTime);
+		if (activeItems.length === 0) return null;
+
+		const latest = activeItems[activeItems.length - 1];
+
+		if (latest.type === 'slide') {
+			if (currentTime - latest.start > latest.duration) {
+				return null;
+			}
+		}
+		return latest;
+	}
+
+	// ※ここからの計算はすべて独自クロック(animatedTime)をベースに動く
+	let currentSubItem = $derived(getCurrentItem(subItems, animatedTime));
+	let currentMainItem = $derived(getCurrentItem(mainItems, animatedTime));
+
+	// --- 5. 座標計算ロジック ---
+	function calcMetrics(text: string, size: number, virtualWidth: number) {
+		let nonAsciiCount = 0;
+		for (let i = 0; i < text.length; i++) {
+			if (text.charCodeAt(i) > 127) {
+				nonAsciiCount++;
+			}
+		}
+		const asciiCount = text.length - nonAsciiCount;
+
+		const textWidth = nonAsciiCount * size + asciiCount * size * 0.5;
+		const initialOffset = (textWidth + virtualWidth) / 2.0 + 5.0;
+
+		return { textWidth, initialOffset };
+	}
+
+	function calcCurrentX(
+		item: ReturnType<typeof parseRow> | null,
+		currentTime: number,
+		virtualWidth: number
+	) {
+		if (!item) return 0;
+		if (item.type === 'static' || item.duration === 0) return 0;
+
+		const { textWidth, initialOffset } = calcMetrics(item.content, VIRTUAL_TEXT_SIZE, virtualWidth);
+		const distance = textWidth + virtualWidth;
+
+		let speed: number;
+		let cycleDuration: number;
+
+		if (item.isLoop) {
+			speed = 500; // 500px/s 固定
+			cycleDuration = distance / speed;
+		} else {
+			speed = distance / item.duration;
+			cycleDuration = item.duration;
+		}
+
+		const localTime = currentTime - item.start;
+		const timeToUse = item.isLoop ? localTime % cycleDuration : localTime;
+
+		return initialOffset - speed * timeToUse;
+	}
+
+	let subX = $derived(calcCurrentX(currentSubItem, animatedTime, SUB_VIRTUAL_WIDTH));
+	let mainX = $derived(calcCurrentX(currentMainItem, animatedTime, MAIN_VIRTUAL_WIDTH));
+</script>
+
+<div class="multi-monitor-previewer" bind:clientWidth={containerWidth}>
+	<div class="monitor-labels-header">
+		<div style:width="{SUB_VIRTUAL_WIDTH * globalScale}px">SUB MONITOR (3840×1080)</div>
+		<div style:width="{PREVIEW_GAP}px"></div>
+		<div style:width="{MAIN_VIRTUAL_WIDTH * globalScale}px">MAIN MONITOR (5760×1080)</div>
 	</div>
-	<div class="flex flex-col">
-		<div class="flex">
-			<div class="mx-1 h-45 w-80 border bg-gray-400 text-4xl">Placeholder</div>
-			<div class="mx-1 h-45 w-80 border bg-gray-400 text-4xl">Placeholder</div>
-			<div class="mx-1 h-45 w-80 border bg-gray-400 text-4xl">Placeholder</div>
+
+	<div class="monitors-container" style:gap="{PREVIEW_GAP}px">
+		<div
+			class="ticker-viewport"
+			style:width="{SUB_VIRTUAL_WIDTH * globalScale}px"
+			style:height="{VIRTUAL_HEIGHT * globalScale}px"
+		>
+			<div
+				class="virtual-stage"
+				style:width="{SUB_VIRTUAL_WIDTH}px"
+				style:height="{VIRTUAL_HEIGHT}px"
+				style:transform="scale({globalScale})"
+			>
+				<div
+					class="ticker-text text-yellow-300"
+					style:visibility={currentSubItem ? 'visible' : 'hidden'}
+					style:transform="translate(calc(-50% + {subX}px), -50%)"
+					style:font-size="{VIRTUAL_TEXT_SIZE}px"
+				>
+					{currentSubItem?.content}
+				</div>
+			</div>
 		</div>
-		<div class="mx-auto my-2 max-w-fit bg-gray-300 px-60 py-2">main</div>
+
+		<div
+			class="ticker-viewport"
+			style:width="{MAIN_VIRTUAL_WIDTH * globalScale}px"
+			style:height="{VIRTUAL_HEIGHT * globalScale}px"
+		>
+			<div
+				class="virtual-stage"
+				style:width="{MAIN_VIRTUAL_WIDTH}px"
+				style:height="{VIRTUAL_HEIGHT}px"
+				style:transform="scale({globalScale})"
+			>
+				<div
+					class="ticker-text text-yellow-300"
+					style:visibility={currentMainItem ? 'visible' : 'hidden'}
+					style:transform="translate(calc(-50% + {mainX}px), -50%)"
+					style:font-size="{VIRTUAL_TEXT_SIZE}px"
+				>
+					{currentMainItem?.content}
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+
+<style>
+	.multi-monitor-previewer {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 90%;
+		margin: 24px auto;
+		font-family: sans-serif;
+		box-sizing: border-box;
+	}
+
+	.monitor-labels-header {
+		display: flex;
+		font-size: 11px;
+		font-weight: bold;
+		color: #888;
+		font-family: monospace;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.monitors-container {
+		display: flex;
+		width: 100%;
+	}
+
+	.ticker-viewport {
+		background-color: #000000;
+		border: 2px solid #333333;
+		border-radius: 4px;
+		position: relative;
+		overflow: hidden;
+		box-sizing: border-box;
+		will-change: width, height;
+	}
+
+	.virtual-stage {
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform-origin: top left;
+	}
+
+	.ticker-text {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		white-space: nowrap;
+		/* color: #ff3e00; を削除（Tailwindにお任せ） */
+		font-family: 'Courier New', Courier, monospace;
+		font-weight: bold;
+		line-height: 1;
+		/* テキストのグロウ効果（光沢）はイエローに合うよう少し調整 */
+		text-shadow: 0 0 15px rgba(253, 224, 71, 0.4);
+		will-change: transform;
+	}
+</style>

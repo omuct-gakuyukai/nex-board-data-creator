@@ -3,7 +3,7 @@
 <script lang="ts">
 	import Modal from './Modal.svelte';
 	import { downloadAllFiles } from '$lib/utils/csvExporter';
-	import { editorState } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/states/editorState.svelte';
 	import { parseEditCSV } from '$lib/utils/csvImporter';
 	import { parseFileName } from '$lib/utils/fileNameparser';
 
@@ -44,7 +44,7 @@
 		class="ml-auto rounded-lg bg-blue-300 p-2 text-xl"
 		onclick={() => document.getElementById('import-csv')?.click()}
 	>
-		Upload CSV
+		Import CSV
 	</button>
 	<button
 		class="ml-10 h-11 w-11 rounded-full border-2 bg-white text-3xl"

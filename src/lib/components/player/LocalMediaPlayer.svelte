@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { editorState } from '$lib/state/editorState.svelte';
+	import { editorState } from '$lib/states/editorState.svelte';
 	import { onMount } from 'svelte';
 
 	let { source } = $props();

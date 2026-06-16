@@ -22,9 +22,6 @@ class PlayerState {
 	// プレイヤーリファレンス（video/audio 要素またはYouTube Player）
 	playerRef = $state<HTMLVideoElement | HTMLAudioElement | YTPlayer | null>(null);
 
-	// WASM アプリとの連携
-	wasmCallback = $state<((time: number) => void) | null>(null);
-
 	setMediaSource(source: MediaSource) {
 		this.mediaSource = source;
 		this.currentTime = 0;
@@ -33,8 +30,6 @@ class PlayerState {
 
 	updateCurrentTime(time: number) {
 		this.currentTime = time;
-		// WASM アプリに時間を通知
-		this.wasmCallback?.(time);
 	}
 
 	setDuration(duration: number) {
@@ -78,7 +73,6 @@ class PlayerState {
 				this.playerRef.seekTo(time);
 			}
 		}
-		this.wasmCallback?.(time);
 	}
 }
 class EditorState {
@@ -87,17 +81,10 @@ class EditorState {
 	rows = $state<Row[]>([]);
 	columns = [
 		'start',
-		'length',
+		'duration',
 		'monitor',
 		'type',
-		'content',
-		'rightFront',
-		'rightMiddle',
-		'rightBack',
-		'leftFront',
-		'leftMiddle',
-		'leftBack',
-		'back'
+		'content'
 	] as const;
 
 	focusedIndex = $state<number | null>(null);
@@ -112,17 +99,10 @@ class EditorState {
 		return {
 			id: crypto.randomUUID(),
 			start: '',
-			length: '',
+			duration: '',
 			monitor: '',
 			type: '',
 			content: '',
-			rightFront: '',
-			rightMiddle: '',
-			rightBack: '',
-			leftFront: '',
-			leftMiddle: '',
-			leftBack: '',
-			back: ''
 		};
 	}
 
