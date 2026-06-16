@@ -14,53 +14,6 @@
 	let availableWidth = $derived(Math.max(0, containerWidth - PREVIEW_GAP));
 	let globalScale = $derived(availableWidth > 0 ? availableWidth / TOTAL_VIRTUAL_WIDTH : 1);
 
-	/*
-	// ─────────────────────────────────────────────────────────
-	// 【新機軸】完全に独立したプレビュー専用の時計（独自クロック）
-	// ─────────────────────────────────────────────────────────
-	let animatedTime = $state(0);
-
-	$effect(() => {
-		const isPlaying = editorState.playerState.isPlaying;
-		const pTime = editorState.playerState.currentTime;
-
-		// ① 動画が停止中の場合
-		if (!isPlaying) {
-			// ループは回さず、動画の正確な停止時間にピタッと同期させる
-			animatedTime = pTime;
-			return;
-		}
-
-		// ② シーク（ジャンプ）検知
-		// 動画の再生時間と独自クロックが 0.8秒以上 ズレた場合は「ユーザーがシークバーを飛ばした」と判定して強制同期
-		if (Math.abs(animatedTime - pTime) > 0.8) {
-			animatedTime = pTime;
-		}
-
-		// ③ 再生中：独自クロックの惰性進行ループ
-		let lastTimestamp = performance.now();
-		let animationFrameId: number;
-
-		function updateClock(now: number) {
-			const deltaSeconds = (now - lastTimestamp) / 1000;
-			lastTimestamp = now;
-
-			// 動画プレイヤーの currentTime 更新を完全に無視して、
-			// モニターのリフレッシュレート通りに自立して時間を進める
-			animatedTime += deltaSeconds;
-
-			animationFrameId = requestAnimationFrame(updateClock);
-		}
-
-		animationFrameId = requestAnimationFrame(updateClock);
-
-		return () => {
-			cancelAnimationFrame(animationFrameId); // クリーンアップ
-		};
-	});
-	// ─────────────────────────────────────────────────────────
-	*/
-
 	// ─────────────────────────────────────────────────────────
 	// 【改善版】プレイヤーの生の時間を毎フレーム直接吸い上げるロジック
 	// ─────────────────────────────────────────────────────────
