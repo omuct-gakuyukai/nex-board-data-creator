@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { editorState } from '$lib/states/editorState.svelte';
+	import { usePreviewClock } from '$lib/utils/timing.svelte';
+
+	const clock = usePreviewClock();
 
 	// --- 1. 仮想解像度と巨大フォントサイズの定義 ---
 	const SUB_VIRTUAL_WIDTH = 1920 * 2; // 3840px (左側)
@@ -13,54 +16,6 @@
 
 	let availableWidth = $derived(Math.max(0, containerWidth - PREVIEW_GAP));
 	let globalScale = $derived(availableWidth > 0 ? availableWidth / TOTAL_VIRTUAL_WIDTH : 1);
-
-	// ─────────────────────────────────────────────────────────
-	// 【改善版】プレイヤーの生の時間を毎フレーム直接吸い上げるロジック
-	// ─────────────────────────────────────────────────────────
-	let animatedTime = $state(0);
-
-	$effect(() => {
-		const isPlaying = editorState.playerState.isPlaying;
-		const pTime = editorState.playerState.currentTime;
-		const playerRef = editorState.playerState.playerRef;
-
-		// ① 動画が停止中の場合、またはプレイヤーへの参照がまだ無い場合
-		if (!isPlaying || !playerRef) {
-			// 通常の粗いイベント通知の時間(pTime)にピタッと同期させて終了
-			animatedTime = pTime;
-			return;
-		}
-
-		// ② 再生中：プレイヤーの「真の現在時間」を毎フレーム直接ポーリングする
-		let animationFrameId: number;
-
-		function syncWithPlayerFrame() {
-			if (!playerRef) return;
-
-			let exactTime = animatedTime;
-
-			// プレイヤーのリファレンスから直接、ミリ秒単位の正確な時間を取得する
-			if ('currentTime' in playerRef) {
-				// HTML5 video / audio 要素の場合
-				exactTime = playerRef.currentTime;
-			} else if ('getCurrentTime' in playerRef && typeof playerRef.getCurrentTime === 'function') {
-				// YouTube Player の場合
-				exactTime = playerRef.getCurrentTime();
-			}
-
-			// 取得した「生の時間」をそのままプレビューの基準時間にする
-			animatedTime = exactTime;
-
-			animationFrameId = requestAnimationFrame(syncWithPlayerFrame);
-		}
-
-		animationFrameId = requestAnimationFrame(syncWithPlayerFrame);
-
-		return () => {
-			cancelAnimationFrame(animationFrameId); // クリーンアップ
-		};
-	});
-	// ─────────────────────────────────────────────────────────
 
 	// --- 2. 行データの共通パース関数 ---
 	function parseRow(row: (typeof editorState.rows)[0]) {
@@ -112,8 +67,8 @@
 	}
 
 	// ※ここからの計算はすべて独自クロック(animatedTime)をベースに動く
-	let currentSubItem = $derived(getCurrentItem(subItems, animatedTime));
-	let currentMainItem = $derived(getCurrentItem(mainItems, animatedTime));
+	let currentSubItem = $derived(getCurrentItem(subItems, clock.time));
+	let currentMainItem = $derived(getCurrentItem(mainItems, clock.time));
 
 	// --- 5. 座標計算ロジック ---
 	function calcMetrics(text: string, size: number, virtualWidth: number) {
@@ -159,8 +114,8 @@
 		return initialOffset - speed * timeToUse;
 	}
 
-	let subX = $derived(calcCurrentX(currentSubItem, animatedTime, SUB_VIRTUAL_WIDTH));
-	let mainX = $derived(calcCurrentX(currentMainItem, animatedTime, MAIN_VIRTUAL_WIDTH));
+	let subX = $derived(calcCurrentX(currentSubItem, clock.time, SUB_VIRTUAL_WIDTH));
+	let mainX = $derived(calcCurrentX(currentMainItem, clock.time, MAIN_VIRTUAL_WIDTH));
 </script>
 
 <div class="multi-monitor-previewer" bind:clientWidth={containerWidth}>

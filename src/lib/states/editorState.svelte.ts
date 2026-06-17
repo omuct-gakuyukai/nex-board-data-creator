@@ -84,7 +84,14 @@ class EditorState {
 		'duration',
 		'monitor',
 		'type',
-		'content'
+		'content',
+		'right',
+		'backRight',
+		'backCenterRight',
+		'backCenter',
+		'backCenterLeft',
+		'backLeft',
+		'left'
 	] as const;
 
 	focusedIndex = $state<number | null>(null);
@@ -103,6 +110,13 @@ class EditorState {
 			monitor: '',
 			type: '',
 			content: '',
+			right: '#000',
+			backRight: '#000',
+			backCenterRight: '#000',
+			backCenter: '#000',
+			backCenterLeft: '#000',
+			backLeft: '#000',
+			left: '#000'
 		};
 	}
 

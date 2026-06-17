@@ -7,17 +7,10 @@ export function generateCSVFiles(rows: Row[]) {
 		.filter((row) => row.monitor === 'main')
 		.map((row) => ({
 			start: row.start,
-			length: row.length,
+			duration: row.duration,
 			monitor: row.monitor,
 			type: row.type,
 			content: row.content,
-			rightFront: row.rightFront,
-			rightMiddle: row.rightMiddle,
-			rightBack: row.rightBack,
-			leftFront: row.leftFront,
-			leftMiddle: row.leftMiddle,
-			leftBack: row.leftBack,
-			back: row.back
 		}));
 
 	// sub.csv: monitor=sub のみ、表示要素を含めて出力
@@ -25,45 +18,38 @@ export function generateCSVFiles(rows: Row[]) {
 		.filter((row) => row.monitor === 'sub')
 		.map((row) => ({
 			start: row.start,
-			length: row.length,
+			duration: row.duration,
 			monitor: row.monitor,
 			type: row.type,
 			content: row.content,
-			rightFront: row.rightFront,
-			rightMiddle: row.rightMiddle,
-			rightBack: row.rightBack,
-			leftFront: row.leftFront,
-			leftMiddle: row.leftMiddle,
-			leftBack: row.leftBack,
-			back: row.back
 		}));
 
 	// light.csv: start と表示要素のみ
 	const lightRows = rows.map((row) => ({
 		start: row.start,
-		rightFront: row.rightFront,
-		rightMiddle: row.rightMiddle,
-		rightBack: row.rightBack,
-		leftFront: row.leftFront,
-		leftMiddle: row.leftMiddle,
-		leftBack: row.leftBack,
-		back: row.back
+		right: row.right,
+		backRight: row.backRight,
+		backCenterRight: row.backCenterRight,
+		backCenter: row.backCenter,
+		backCenterLeft: row.backCenterLeft,
+		backLeft: row.backLeft,
+		left: row.left
 	}));
 
 	// edit.csv: 全データそのまま（復元用）
 	const editRows = rows.map((row) => ({
 		start: row.start,
-		length: row.length,
+		duration: row.duration,
 		monitor: row.monitor,
 		type: row.type,
 		content: row.content,
-		rightFront: row.rightFront,
-		rightMiddle: row.rightMiddle,
-		rightBack: row.rightBack,
-		leftFront: row.leftFront,
-		leftMiddle: row.leftMiddle,
-		leftBack: row.leftBack,
-		back: row.back
+		right: row.right,
+		backRight: row.backRight,
+		backCenterRight: row.backCenterRight,
+		backCenter: row.backCenter,
+		backCenterLeft: row.backCenterLeft,
+		backLeft: row.backLeft,
+		left: row.left
 	}));
 
 	return {
