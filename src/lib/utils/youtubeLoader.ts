@@ -20,7 +20,7 @@ declare global {
 	interface Window {
 		YT: {
 			Player: {
-				new(element: HTMLElement | string, options: YTPlayerOptions): YTPlayer;
+				new (element: HTMLElement | string, options: YTPlayerOptions): YTPlayer;
 			};
 			PlayerState: YTPlayerState;
 		};

@@ -5,11 +5,33 @@
 	// 共有タイミングロジックの使用
 	const clock = usePreviewClock();
 
-	// 現在の行を算出
-	let currentRow = $derived.by(() => {
+	const lightColumns = [
+		'left',
+		'right',
+		'backLeft',
+		'backCenterLeft',
+		'backCenter',
+		'backCenterRight',
+		'backRight'
+	] as const;
+
+	let activeColors = $derived.by(() => {
 		const time = clock.time;
 		const sorted = [...editorState.rows].sort((a, b) => parseFloat(a.start) - parseFloat(b.start));
-		return sorted.findLast((row) => parseFloat(row.start) <= time) || null;
+
+		// 現在より前の行のみ抽出
+		const pastRows = sorted.filter((row) => parseFloat(row.start) <= time);
+
+		// 各列ごとに「最後に色が入力されていた値」を探す
+		const latestColors: Record<string, string> = {};
+
+		lightColumns.forEach((col) => {
+			// 下から遡って、空文字ではない最初の値を見つける
+			const lastValidRow = [...pastRows].reverse().find((row) => row[col] && row[col] !== '');
+			latestColors[col] = lastValidRow ? lastValidRow[col] : '#000000'; // 見つからなければ黒
+		});
+
+		return latestColors;
 	});
 
 	// ライトがオフ（黒）の場合は光らせない制御
@@ -21,67 +43,96 @@
 
 <div class="stage-wrapper">
 	<div class="stage-scene">
-		<div class="row back">
-			<div
-				class="light"
-				style:background={currentRow?.backLeft}
-				style:box-shadow={getGlow(currentRow?.backLeft || '')}
-			></div>
-			<div
-				class="light"
-				style:background={currentRow?.backCenterLeft}
-				style:box-shadow={getGlow(currentRow?.backCenterLeft || '')}
-			></div>
-			<div
-				class="light"
-				style:background={currentRow?.backCenter}
-				style:box-shadow={getGlow(currentRow?.backCenter || '')}
-			></div>
-			<div
-				class="light"
-				style:background={currentRow?.backCenterRight}
-				style:box-shadow={getGlow(currentRow?.backCenterRight || '')}
-			></div>
-			<div
-				class="light"
-				style:background={currentRow?.backRight}
-				style:box-shadow={getGlow(currentRow?.backRight || '')}
-			></div>
+		<div class="row back flex">
+			<div class="light-wrapper flex flex-col">
+				<div
+					class="light"
+					style:background={activeColors?.backLeft}
+					style:box-shadow={getGlow(activeColors?.backLeft || '')}
+				></div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />左</div>
+			</div>
+			<div class="light-wrapper flex flex-col">
+				<div
+					class="light"
+					style:background={activeColors?.backCenterLeft}
+					style:box-shadow={getGlow(activeColors?.backCenterLeft || '')}
+				></div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />中央左</div>
+			</div>
+			<div class="light-wrapper flex flex-col">
+				<div
+					class="light"
+					style:background={activeColors?.backCenter}
+					style:box-shadow={getGlow(activeColors?.backCenter || '')}
+				></div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />中央</div>
+			</div>
+			<div class="light-wrapper flex flex-col">
+				<div
+					class="light"
+					style:background={activeColors?.backCenterRight}
+					style:box-shadow={getGlow(activeColors?.backCenterRight || '')}
+				></div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />中央右</div>
+			</div>
+			<div class="light-wrapper flex flex-col">
+				<div
+					class="light"
+					style:background={activeColors?.backRight}
+					style:box-shadow={getGlow(activeColors?.backRight || '')}
+				></div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />右</div>
+			</div>
 		</div>
 
-		<div class="floor">
-			<div
-				class="light side"
-				style:background={currentRow?.left}
-				style:box-shadow={getGlow(currentRow?.left || '')}
-			></div>
-			<div
-				class="light side"
-				style:background={currentRow?.right}
-				style:box-shadow={getGlow(currentRow?.right || '')}
-			></div>
+		<div class="floor flex">
+			<div class="flex flex-col items-center">
+				<div class="mb-2 text-white">左サイド</div>
+				<div
+					class="light side"
+					style:background={activeColors?.left}
+					style:box-shadow={getGlow(activeColors?.left || '')}
+				></div>
+			</div>
+			<div class="flex flex-col items-center">
+				<div class="mb-2 text-white">右サイド</div>
+				<div
+					class="light side"
+					style:background={activeColors?.right}
+					style:box-shadow={getGlow(activeColors?.right || '')}
+				></div>
+			</div>
 		</div>
 	</div>
 </div>
 
 <style>
 	.stage-wrapper {
-		perspective: 1000px; /* 立体感の演出 */
-		padding: 40px;
+		padding-top: 20px;
+		padding-right: 20px;
+		padding-left: 20px;
+		padding-bottom: 10px;
 		background: #0a0a0a;
 		border-radius: 16px;
+		height: 240px;
 	}
 
 	.stage-scene {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 40px;
+		gap: 20px;
 	}
 
 	.row {
 		display: flex;
-		gap: 24px;
+	}
+
+	.light-wrapper {
+		margin: 0;
+		margin-left: 7px;
+		margin-right: 7px;
 	}
 
 	.floor {
@@ -91,8 +142,10 @@
 		width: 100%;
 		max-width: 600px;
 		background: #111;
-		padding: 20px;
-		transform: rotateX(30deg); /* ステージを斜めに倒す */
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 0px;
+		padding-bottom: 20px;
 		border: 1px solid #333;
 	}
 

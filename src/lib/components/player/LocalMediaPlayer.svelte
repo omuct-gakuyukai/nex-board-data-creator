@@ -20,7 +20,6 @@
 	});
 </script>
 
-// src/lib/components/player/LocalMediaPlayer.svelte
 {#if source?.mimeType?.startsWith('video')}
 	<video bind:this={mediaElement} src={source.fileUrl} class="h-full w-full" controls>
 		<track kind="captions" />

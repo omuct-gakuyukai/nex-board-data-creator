@@ -75,23 +75,28 @@
 					playerState.seek(+value);
 				}}
 				class="flex-1"
-			/><input
-				type="range"
-				min="0"
-				max="100"
-				value="100"
-				oninput={(e) => {
-					const volume = +(e.target as HTMLInputElement).value;
-					const ref = playerState.playerRef;
-
-					if (ref && 'setVolume' in ref) {
-						ref.setVolume(volume);
-					} else if (ref && 'volume' in ref) {
-						ref.volume = volume / 100;
-					}
-				}}
-				class="w-20"
 			/>
+			<div class="flex flex-col">
+				<label for="volume">音量</label>
+				<input
+					id="volume"
+					type="range"
+					min="0"
+					max="100"
+					value="100"
+					oninput={(e) => {
+						const volume = +(e.target as HTMLInputElement).value;
+						const ref = playerState.playerRef;
+
+						if (ref && 'setVolume' in ref) {
+							ref.setVolume(volume);
+						} else if (ref && 'volume' in ref) {
+							ref.volume = volume / 100;
+						}
+					}}
+					class="w-20"
+				/>
+			</div>
 		</div>
 	{/if}
 </div>

@@ -9,7 +9,7 @@
 	const MAIN_VIRTUAL_WIDTH = 1920 * 3; // 5760px (右側)
 	const TOTAL_VIRTUAL_WIDTH = SUB_VIRTUAL_WIDTH + MAIN_VIRTUAL_WIDTH; // 9600px
 	const VIRTUAL_HEIGHT = 1080;
-	const VIRTUAL_TEXT_SIZE = 1060;
+	const VIRTUAL_TEXT_SIZE = 780;
 	const PREVIEW_GAP = 24;
 
 	let containerWidth = $state(0);
@@ -26,7 +26,7 @@
 
 		if (type === 'static') {
 			duration = 0;
-		} else if (type === 'roop' || type === 'loop') {
+		} else if (type === 'loop') {
 			duration = 1200;
 		}
 
@@ -138,7 +138,7 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class="ticker-text text-yellow-300"
+					class="ticker-text font-ipa text-yellow-300"
 					style:visibility={currentSubItem ? 'visible' : 'hidden'}
 					style:transform="translate(calc(-50% + {subX}px), -50%)"
 					style:font-size="{VIRTUAL_TEXT_SIZE}px"
@@ -160,7 +160,7 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class="ticker-text text-yellow-300"
+					class="ticker-text font-ipa text-yellow-300"
 					style:visibility={currentMainItem ? 'visible' : 'hidden'}
 					style:transform="translate(calc(-50% + {mainX}px), -50%)"
 					style:font-size="{VIRTUAL_TEXT_SIZE}px"
@@ -179,7 +179,7 @@
 		gap: 4px;
 		width: 90%;
 		margin: 24px auto;
-		font-family: sans-serif;
+		margin-top: 0;
 		box-sizing: border-box;
 	}
 
@@ -217,11 +217,12 @@
 
 	.ticker-text {
 		position: absolute;
+		display: flex;
+		height: auto;
+		align-items: center;
 		top: 50%;
 		left: 50%;
 		white-space: nowrap;
-		/* color: #ff3e00; を削除（Tailwindにお任せ） */
-		font-family: 'Courier New', Courier, monospace;
 		font-weight: bold;
 		line-height: 1;
 		/* テキストのグロウ効果（光沢）はイエローに合うよう少し調整 */

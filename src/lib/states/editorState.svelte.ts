@@ -81,17 +81,18 @@ class EditorState {
 	rows = $state<Row[]>([]);
 	columns = [
 		'start',
+		'lyric',
 		'duration',
 		'monitor',
 		'type',
 		'content',
-		'right',
-		'backRight',
-		'backCenterRight',
-		'backCenter',
-		'backCenterLeft',
+		'left',
 		'backLeft',
-		'left'
+		'backCenterLeft',
+		'backCenter',
+		'backCenterRight',
+		'backRight',
+		'right',
 	] as const;
 
 	focusedIndex = $state<number | null>(null);
@@ -106,17 +107,18 @@ class EditorState {
 		return {
 			id: crypto.randomUUID(),
 			start: '',
+			lyric: '',
 			duration: '',
 			monitor: '',
 			type: '',
 			content: '',
-			right: '#000',
-			backRight: '#000',
-			backCenterRight: '#000',
-			backCenter: '#000',
-			backCenterLeft: '#000',
+			left: '#000',
 			backLeft: '#000',
-			left: '#000'
+			backCenterLeft: '#000',
+			backCenter: '#000',
+			backCenterRight: '#000',
+			backRight: '#000',
+			right: '#000',
 		};
 	}
 
@@ -127,6 +129,13 @@ class EditorState {
 			this.focusedIndex = this.focusedIndex + 1;
 		} else {
 			this.rows.push(newRow);
+		}
+	}
+
+	deleteRow() {
+		if (this.focusedIndex !== null) {
+			this.rows.splice(this.focusedIndex, 1);
+			this.focusedIndex = null;
 		}
 	}
 }

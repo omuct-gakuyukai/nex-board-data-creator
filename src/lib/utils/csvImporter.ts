@@ -11,6 +11,7 @@ export function parseEditCSV(file: File): Promise<Row[]> {
 				const validRows = rows.map((row) => ({
 					id: row.id || crypto.randomUUID(),
 					start: row.start || '',
+					lyric: row.lyric || '',
 					duration: row.duration || '',
 					monitor: row.monitor || '',
 					type: row.type || '',
