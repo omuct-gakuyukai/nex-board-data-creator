@@ -4,6 +4,7 @@
 	import Modal from './Modal.svelte';
 	import { fileState } from '$lib/states/fileState.svelte';
 
+	let showModal = $state(true);
 	async function handleImport(event: Event) {
 		const target = event.target as HTMLInputElement;
 		const file = target.files?.[0];
@@ -17,8 +18,6 @@
 			alert('ファイルのインポートに失敗しました');
 		}
 	}
-
-	let showModal = $state(false);
 </script>
 
 <header class="flex bg-blue-400 px-6 py-3">
