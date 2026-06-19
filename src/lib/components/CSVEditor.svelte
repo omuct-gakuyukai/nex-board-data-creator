@@ -19,6 +19,16 @@
 			slide: 'スライド表示',
 			loop: 'ループ表示',
 			static: '固定表示'
+		},
+		left: {
+			default: '',
+			on: '点灯',
+			off: '消灯'
+		},
+		right: {
+			default: '',
+			on: '点灯',
+			off: '消灯'
 		}
 	};
 
@@ -87,6 +97,19 @@
 										id={`${column}-${row.id}-select`}
 										class="bg-transparent outline-0"
 										onchange={() => handleTypeChange(row, column)}
+									>
+										{#each Object.entries(options[column as keyof typeof options]) as [optKey, optLabel] (optKey)}
+											<option value={optKey === 'default' ? '' : optKey}>{optLabel}</option>
+										{/each}
+									</select>
+								</td>
+							{:else if column == 'left' || column == 'right'}
+								<td class="w-17 border p-1">
+									<select
+										name={column}
+										bind:value={row[column]}
+										class="bg-transparent outline-0"
+										id={`${column}-${row.id}-select`}
 									>
 										{#each Object.entries(options[column as keyof typeof options]) as [optKey, optLabel] (optKey)}
 											<option value={optKey === 'default' ? '' : optKey}>{optLabel}</option>

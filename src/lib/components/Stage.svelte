@@ -36,7 +36,7 @@
 
 	// ライトがオフ（黒）の場合は光らせない制御
 	function getGlow(color: string) {
-		const isOff = !color || color === '#000000' || color === '#000';
+		const isOff = !color || color === '#000000' || color === '#000' || color === 'off';
 		return isOff ? 'none' : `0 0 25px ${color}`;
 	}
 </script>
@@ -91,16 +91,20 @@
 				<div class="mb-2 text-white">左サイド</div>
 				<div
 					class="light side"
-					style:background={activeColors?.left}
-					style:box-shadow={getGlow(activeColors?.left || '')}
+					style:background={`${activeColors.left === 'on' ? '#ffffff' : activeColors.left === 'off' ? '#000000' : ''}`}
+					style:box-shadow={getGlow(
+						activeColors.left === 'on' ? '#ffffff' : activeColors.left === 'off' ? '#000000' : ''
+					)}
 				></div>
 			</div>
 			<div class="flex flex-col items-center">
 				<div class="mb-2 text-white">右サイド</div>
 				<div
 					class="light side"
-					style:background={activeColors?.right}
-					style:box-shadow={getGlow(activeColors?.right || '')}
+					style:background={`${activeColors.right === 'on' ? '#ffffff' : activeColors.right === 'off' ? '#000000' : ''}`}
+					style:box-shadow={getGlow(
+						activeColors.right === 'on' ? '#ffffff' : activeColors.right === 'off' ? '#000000' : ''
+					)}
 				></div>
 			</div>
 		</div>

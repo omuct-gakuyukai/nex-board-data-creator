@@ -19,11 +19,20 @@ class FileState {
     }
 
     exportCSV() {
-        // グループ名・曲名が空かどうかをeditorStateから正しくチェック
+        // 1. 空白チェック
         if (!editorState.groupName.trim() || !editorState.songName.trim()) {
             alert('グループ名と曲名を入力してください');
             return;
         }
+
+        // 2. 不正文字チェック（追加）
+        const hasInvalidChar = /[^a-zA-Z0-9_().-]/;
+        if (hasInvalidChar.test(editorState.groupName) || hasInvalidChar.test(editorState.songName)) {
+            alert('ファイル名に使用できない文字が含まれています。赤枠のエラーを修正してください。');
+            return;
+        }
+
+        // 3. ダウンロード実行
         downloadAllFiles(editorState.rows, editorState.groupName, editorState.songName);
     }
 }

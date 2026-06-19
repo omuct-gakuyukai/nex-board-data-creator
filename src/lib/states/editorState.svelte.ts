@@ -112,13 +112,13 @@ class EditorState {
 			monitor: '',
 			type: '',
 			content: '',
-			left: '#000',
+			left: '',
 			backLeft: '#000',
 			backCenterLeft: '#000',
 			backCenter: '#000',
 			backCenterRight: '#000',
 			backRight: '#000',
-			right: '#000',
+			right: '',
 		};
 	}
 
