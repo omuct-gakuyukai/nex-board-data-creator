@@ -9,11 +9,12 @@ export function generateCSVFiles(rows: Row[]) {
 		type: row.type,
 		content: row.content,
 		left: row.left,
-		backLeft: row.backLeft,
-		backCenterLeft: row.backCenterLeft,
-		backCenter: row.backCenter,
-		backCenterRight: row.backCenterRight,
-		backRight: row.backRight,
+		backOne: row.backOne,
+		backTwo: row.backTwo,
+		backThree: row.backThree,
+		backFour: row.backFour,
+		backFive: row.backFive,
+		backSix: row.backSix,
 		right: row.right,
 	}));
 

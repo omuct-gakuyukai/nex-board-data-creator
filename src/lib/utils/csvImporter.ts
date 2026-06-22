@@ -17,11 +17,12 @@ export function parseEditCSV(file: File): Promise<Row[]> {
 					type: row.type || '',
 					content: row.content || '',
 					right: row.right || '',
-					backRight: row.backRight || '',
-					backCenterRight: row.backCenterRight || '',
-					backCenter: row.backCenter || '',
-					backCenterLeft: row.backCenterLeft || '',
-					backLeft: row.backLeft || '',
+					backOne: row.backOne || '',
+					backTwo: row.backTwo || '',
+					backThree: row.backThree || '',
+					backFour: row.backFour || '',
+					backFive: row.backFive || '',
+					backSix: row.backSix || '',
 					left: row.left || ''
 				}));
 

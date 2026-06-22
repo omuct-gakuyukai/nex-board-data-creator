@@ -8,11 +8,12 @@
 	const lightColumns = [
 		'left',
 		'right',
-		'backLeft',
-		'backCenterLeft',
-		'backCenter',
-		'backCenterRight',
-		'backRight'
+		'backOne',
+		'backTwo',
+		'backThree',
+		'backFour',
+		'backFive',
+		'backSix'
 	] as const;
 
 	let activeColors = $derived.by(() => {
@@ -47,42 +48,50 @@
 			<div class="light-wrapper flex flex-col">
 				<div
 					class="light"
-					style:background={activeColors?.backLeft}
-					style:box-shadow={getGlow(activeColors?.backLeft || '')}
+					style:background={activeColors?.backOne}
+					style:box-shadow={getGlow(activeColors?.backOne || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />左</div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />1</div>
 			</div>
 			<div class="light-wrapper flex flex-col">
 				<div
 					class="light"
-					style:background={activeColors?.backCenterLeft}
-					style:box-shadow={getGlow(activeColors?.backCenterLeft || '')}
+					style:background={activeColors?.backTwo}
+					style:box-shadow={getGlow(activeColors?.backTwo || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />中央左</div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />2</div>
 			</div>
 			<div class="light-wrapper flex flex-col">
 				<div
 					class="light"
-					style:background={activeColors?.backCenter}
-					style:box-shadow={getGlow(activeColors?.backCenter || '')}
+					style:background={activeColors?.backThree}
+					style:box-shadow={getGlow(activeColors?.backThree || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />中央</div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />3</div>
 			</div>
 			<div class="light-wrapper flex flex-col">
 				<div
 					class="light"
-					style:background={activeColors?.backCenterRight}
-					style:box-shadow={getGlow(activeColors?.backCenterRight || '')}
+					style:background={activeColors?.backFour}
+					style:box-shadow={getGlow(activeColors?.backFour || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />中央右</div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />4</div>
 			</div>
 			<div class="light-wrapper flex flex-col">
 				<div
 					class="light"
-					style:background={activeColors?.backRight}
-					style:box-shadow={getGlow(activeColors?.backRight || '')}
+					style:background={activeColors?.backFive}
+					style:box-shadow={getGlow(activeColors?.backFive || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />右</div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />5</div>
+			</div>
+			<div class="light-wrapper flex flex-col">
+				<div
+					class="light"
+					style:background={activeColors?.backSix}
+					style:box-shadow={getGlow(activeColors?.backSix || '')}
+				></div>
+				<div class="mt-2 text-center text-sm text-white">バック<br />6</div>
 			</div>
 		</div>
 
@@ -135,8 +144,8 @@
 
 	.light-wrapper {
 		margin: 0;
-		margin-left: 7px;
-		margin-right: 7px;
+		margin-left: 2px;
+		margin-right: 2px;
 	}
 
 	.floor {

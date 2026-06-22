@@ -52,7 +52,7 @@
 			<thead class="sticky top-10 z-10 bg-gray-200 shadow-sm">
 				<tr>
 					<th colspan="6" class="border py-1">電光掲示板</th>
-					<th colspan="7" class="border py-1">ステージ照明</th>
+					<th colspan="8" class="border py-1">ステージ照明</th>
 				</tr>
 				<tr>
 					<th class="border py-1">開始時間</th>
@@ -62,11 +62,12 @@
 					<th class="border py-1">表示形式</th>
 					<th class="border py-1">内容</th>
 					<th class="border py-1">左サイド</th>
-					<th class="border py-1">バック左</th>
-					<th class="border py-1 text-xs">バック中央左</th>
-					<th class="border py-1 text-xs">バック中央</th>
-					<th class="border py-1 text-xs">バック中央右</th>
-					<th class="border py-1">バック右</th>
+					<th class="border py-1">バック1</th>
+					<th class="border py-1">バック2</th>
+					<th class="border py-1">バック3</th>
+					<th class="border py-1">バック4</th>
+					<th class="border py-1">バック5</th>
+					<th class="border py-1">バック6</th>
 					<th class="border py-1">右サイド</th>
 				</tr>
 			</thead>

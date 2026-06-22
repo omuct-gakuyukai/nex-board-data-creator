@@ -7,10 +7,11 @@ export interface Row {
 	type: string;
 	content: string;
 	left: string;
-	backLeft: string;
-	backCenterLeft: string;
-	backCenter: string;
-	backCenterRight: string;
-	backRight: string;
+	backOne: string;
+	backTwo: string;
+	backThree: string;
+	backFour: string;
+	backFive: string;
+	backSix: string;
 	right: string;
 }
