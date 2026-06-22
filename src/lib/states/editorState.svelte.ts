@@ -93,7 +93,7 @@ class EditorState {
 		'backFour',
 		'backFive',
 		'backSix',
-		'right',
+		'right'
 	] as const;
 
 	focusedIndex = $state<number | null>(null);
@@ -120,7 +120,7 @@ class EditorState {
 			backFour: '#000',
 			backFive: '#000',
 			backSix: '#000',
-			right: '',
+			right: ''
 		};
 	}
 

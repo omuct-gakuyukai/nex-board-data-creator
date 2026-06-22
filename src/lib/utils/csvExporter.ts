@@ -15,7 +15,7 @@ export function generateCSVFiles(rows: Row[]) {
 		backFour: row.backFour,
 		backFive: row.backFive,
 		backSix: row.backSix,
-		right: row.right,
+		right: row.right
 	}));
 
 	return {
