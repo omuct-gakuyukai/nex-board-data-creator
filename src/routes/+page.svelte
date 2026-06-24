@@ -16,7 +16,7 @@
 
 <Preview />
 
-<div class="mx-7 my-2 flex">
+<div class="mx-7 mt-0 mb-2 flex">
 	<div class="flex flex-col">
 		<Stage />
 		<Player />

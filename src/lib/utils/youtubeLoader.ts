@@ -53,6 +53,8 @@ export interface YTPlayer {
 	getPlayerState(): number;
 	getCurrentTime(): number;
 	getDuration(): number;
+	getVolume(): number;
+	setVolume(volume: number): void;
 	playVideo(): void;
 	pauseVideo(): void;
 	seekTo(seconds: number): void;

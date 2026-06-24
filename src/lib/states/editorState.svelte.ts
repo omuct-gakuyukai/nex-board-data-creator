@@ -22,9 +22,6 @@ class PlayerState {
 	// プレイヤーリファレンス（video/audio 要素またはYouTube Player）
 	playerRef = $state<HTMLVideoElement | HTMLAudioElement | YTPlayer | null>(null);
 
-	// WASM アプリとの連携
-	wasmCallback = $state<((time: number) => void) | null>(null);
-
 	setMediaSource(source: MediaSource) {
 		this.mediaSource = source;
 		this.currentTime = 0;
@@ -33,8 +30,6 @@ class PlayerState {
 
 	updateCurrentTime(time: number) {
 		this.currentTime = time;
-		// WASM アプリに時間を通知
-		this.wasmCallback?.(time);
 	}
 
 	setDuration(duration: number) {
@@ -78,7 +73,6 @@ class PlayerState {
 				this.playerRef.seekTo(time);
 			}
 		}
-		this.wasmCallback?.(time);
 	}
 }
 class EditorState {
@@ -87,17 +81,19 @@ class EditorState {
 	rows = $state<Row[]>([]);
 	columns = [
 		'start',
-		'length',
+		'lyric',
+		'duration',
 		'monitor',
 		'type',
 		'content',
-		'rightFront',
-		'rightMiddle',
-		'rightBack',
-		'leftFront',
-		'leftMiddle',
-		'leftBack',
-		'back'
+		'left',
+		'backOne',
+		'backTwo',
+		'backThree',
+		'backFour',
+		'backFive',
+		'backSix',
+		'right'
 	] as const;
 
 	focusedIndex = $state<number | null>(null);
@@ -112,17 +108,19 @@ class EditorState {
 		return {
 			id: crypto.randomUUID(),
 			start: '',
-			length: '',
+			lyric: '',
+			duration: '',
 			monitor: '',
 			type: '',
 			content: '',
-			rightFront: '',
-			rightMiddle: '',
-			rightBack: '',
-			leftFront: '',
-			leftMiddle: '',
-			leftBack: '',
-			back: ''
+			left: '',
+			backOne: '#000',
+			backTwo: '#000',
+			backThree: '#000',
+			backFour: '#000',
+			backFive: '#000',
+			backSix: '#000',
+			right: ''
 		};
 	}
 
@@ -133,6 +131,13 @@ class EditorState {
 			this.focusedIndex = this.focusedIndex + 1;
 		} else {
 			this.rows.push(newRow);
+		}
+	}
+
+	deleteRow() {
+		if (this.focusedIndex !== null) {
+			this.rows.splice(this.focusedIndex, 1);
+			this.focusedIndex = null;
 		}
 	}
 }

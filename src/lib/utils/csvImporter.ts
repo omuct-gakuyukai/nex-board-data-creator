@@ -11,17 +11,19 @@ export function parseEditCSV(file: File): Promise<Row[]> {
 				const validRows = rows.map((row) => ({
 					id: row.id || crypto.randomUUID(),
 					start: row.start || '',
-					length: row.length || '',
+					lyric: row.lyric || '',
+					duration: row.duration || '',
 					monitor: row.monitor || '',
 					type: row.type || '',
 					content: row.content || '',
-					rightFront: row.rightFront || '',
-					rightMiddle: row.rightMiddle || '',
-					rightBack: row.rightBack || '',
-					leftFront: row.leftFront || '',
-					leftMiddle: row.leftMiddle || '',
-					leftBack: row.leftBack || '',
-					back: row.back || ''
+					right: row.right || '',
+					backOne: row.backOne || '',
+					backTwo: row.backTwo || '',
+					backThree: row.backThree || '',
+					backFour: row.backFour || '',
+					backFive: row.backFive || '',
+					backSix: row.backSix || '',
+					left: row.left || ''
 				}));
 
 				resolve(validRows);

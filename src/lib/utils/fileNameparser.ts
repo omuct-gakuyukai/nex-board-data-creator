@@ -1,9 +1,9 @@
 export function parseFileName(filename: string): { groupName: string; songName: string } | null {
-	if (!filename.endsWith('_edit.csv')) {
+	if (!filename.endsWith('.csv')) {
 		return null;
 	}
 
-	const baseName = filename.replace(/_edit\.csv$/, '');
+	const baseName = filename.replace(/.csv$/, '');
 
 	const lastUnderscoreIndex = baseName.lastIndexOf('_');
 	if (lastUnderscoreIndex === -1) {

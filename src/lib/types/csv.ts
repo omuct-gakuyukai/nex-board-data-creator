@@ -1,15 +1,17 @@
 export interface Row {
 	id: string;
 	start: string;
-	length: string;
+	lyric: string;
+	duration: string;
 	monitor: string;
 	type: string;
 	content: string;
-	rightFront: string;
-	rightMiddle: string;
-	rightBack: string;
-	leftFront: string;
-	leftMiddle: string;
-	leftBack: string;
-	back: string;
+	left: string;
+	backOne: string;
+	backTwo: string;
+	backThree: string;
+	backFour: string;
+	backFive: string;
+	backSix: string;
+	right: string;
 }

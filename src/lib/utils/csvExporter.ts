@@ -2,75 +2,24 @@ import Papa from 'papaparse';
 import type { Row } from '$lib/types/csv';
 
 export function generateCSVFiles(rows: Row[]) {
-	// main.csv: monitor=main のみ、表示要素を含めて出力
-	const mainRows = rows
-		.filter((row) => row.monitor === 'main')
-		.map((row) => ({
-			start: row.start,
-			length: row.length,
-			monitor: row.monitor,
-			type: row.type,
-			content: row.content,
-			rightFront: row.rightFront,
-			rightMiddle: row.rightMiddle,
-			rightBack: row.rightBack,
-			leftFront: row.leftFront,
-			leftMiddle: row.leftMiddle,
-			leftBack: row.leftBack,
-			back: row.back
-		}));
-
-	// sub.csv: monitor=sub のみ、表示要素を含めて出力
-	const subRows = rows
-		.filter((row) => row.monitor === 'sub')
-		.map((row) => ({
-			start: row.start,
-			length: row.length,
-			monitor: row.monitor,
-			type: row.type,
-			content: row.content,
-			rightFront: row.rightFront,
-			rightMiddle: row.rightMiddle,
-			rightBack: row.rightBack,
-			leftFront: row.leftFront,
-			leftMiddle: row.leftMiddle,
-			leftBack: row.leftBack,
-			back: row.back
-		}));
-
-	// light.csv: start と表示要素のみ
-	const lightRows = rows.map((row) => ({
+	const csvRows = rows.map((row) => ({
 		start: row.start,
-		rightFront: row.rightFront,
-		rightMiddle: row.rightMiddle,
-		rightBack: row.rightBack,
-		leftFront: row.leftFront,
-		leftMiddle: row.leftMiddle,
-		leftBack: row.leftBack,
-		back: row.back
-	}));
-
-	// edit.csv: 全データそのまま（復元用）
-	const editRows = rows.map((row) => ({
-		start: row.start,
-		length: row.length,
+		duration: row.duration,
 		monitor: row.monitor,
 		type: row.type,
 		content: row.content,
-		rightFront: row.rightFront,
-		rightMiddle: row.rightMiddle,
-		rightBack: row.rightBack,
-		leftFront: row.leftFront,
-		leftMiddle: row.leftMiddle,
-		leftBack: row.leftBack,
-		back: row.back
+		left: row.left,
+		backOne: row.backOne,
+		backTwo: row.backTwo,
+		backThree: row.backThree,
+		backFour: row.backFour,
+		backFive: row.backFive,
+		backSix: row.backSix,
+		right: row.right
 	}));
 
 	return {
-		main: Papa.unparse(mainRows),
-		sub: Papa.unparse(subRows),
-		light: Papa.unparse(lightRows),
-		edit: Papa.unparse(editRows)
+		csv: Papa.unparse(csvRows)
 	};
 }
 
@@ -92,9 +41,5 @@ export function downloadAllFiles(rows: Row[], groupName: string, songName: strin
 	const csvFiles = generateCSVFiles(rows);
 	const baseFileName = `${groupName}_${songName}`;
 
-	// 4ファイルを順次ダウンロード
-	setTimeout(() => downloadFile(csvFiles.main, `${baseFileName}_main.csv`), 0);
-	setTimeout(() => downloadFile(csvFiles.sub, `${baseFileName}_sub.csv`), 200);
-	setTimeout(() => downloadFile(csvFiles.light, `${baseFileName}_light.csv`), 400);
-	setTimeout(() => downloadFile(csvFiles.edit, `${baseFileName}_edit.csv`), 600);
+	setTimeout(() => downloadFile(csvFiles.csv, `${baseFileName}.csv`), 0);
 }
