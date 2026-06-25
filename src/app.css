@@ -1,10 +1,12 @@
+@import 'tailwindcss';
 @font-face {
 	font-family: 'IPA Gothic';
-	src: url('/fonts/ipa-gothic.ttf') format('truetype');
+	font-style: normal;
+	font-weight: 400;
+	src: url('/fonts/ipag.ttf') format('truetype');
+	font-display: swap;
 }
 
-@import 'tailwindcss';
-
 @theme {
-	--font-ipa: 'IPA Gothic', monospace;
+	--font-ipa: 'IPA Gothic', 'sans-serif';
 }
