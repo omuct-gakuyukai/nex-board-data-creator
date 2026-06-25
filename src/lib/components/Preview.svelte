@@ -101,7 +101,7 @@
 		let cycleDuration: number;
 
 		if (item.isLoop) {
-			speed = 500; // 500px/s 固定
+			speed = 440; // 500px/s 固定
 			cycleDuration = distance / speed;
 		} else {
 			speed = distance / item.duration;
@@ -117,6 +117,8 @@
 	let subX = $derived(calcCurrentX(currentSubItem, clock.time, SUB_VIRTUAL_WIDTH));
 	let mainX = $derived(calcCurrentX(currentMainItem, clock.time, MAIN_VIRTUAL_WIDTH));
 </script>
+
+<div class="font-ipa"></div>
 
 <div class="multi-monitor-previewer" bind:clientWidth={containerWidth}>
 	<div class="monitor-labels-header">
@@ -138,7 +140,7 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class="ticker-text font-ipa text-yellow-300"
+					class="ticker-text font-ipa font-bold text-yellow-300"
 					style:visibility={currentSubItem ? 'visible' : 'hidden'}
 					style:transform="translate(calc(-50% + {subX}px), -50%)"
 					style:font-size="{VIRTUAL_TEXT_SIZE}px"
@@ -160,7 +162,7 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class="ticker-text font-ipa text-yellow-300"
+					class="ticker-text font-ipa font-bold text-yellow-300"
 					style:visibility={currentMainItem ? 'visible' : 'hidden'}
 					style:transform="translate(calc(-50% + {mainX}px), -50%)"
 					style:font-size="{VIRTUAL_TEXT_SIZE}px"
@@ -223,7 +225,6 @@
 		top: 50%;
 		left: 50%;
 		white-space: nowrap;
-		font-weight: bold;
 		line-height: 1;
 		/* テキストのグロウ効果（光沢）はイエローに合うよう少し調整 */
 		text-shadow: 0 0 15px rgba(253, 224, 71, 0.4);
