@@ -104,7 +104,9 @@
 			speed = 440; // 500px/s 固定
 			cycleDuration = distance / speed;
 		} else {
-			speed = distance / item.duration;
+			// 本家 nex-board の calc_speed(text_offset * 2, duration, window_width) に合わせる
+			// = (text_offset * 2 + window_width) / duration = (2 * initialOffset + virtualWidth) / duration
+			speed = (2 * initialOffset + virtualWidth) / item.duration;
 			cycleDuration = item.duration;
 		}
 
