@@ -9,7 +9,7 @@
 	const MAIN_VIRTUAL_WIDTH = 1920 * 3; // 5760px (右側)
 	const TOTAL_VIRTUAL_WIDTH = SUB_VIRTUAL_WIDTH + MAIN_VIRTUAL_WIDTH; // 9600px
 	const VIRTUAL_HEIGHT = 1080;
-	const VIRTUAL_TEXT_SIZE = 780;
+	const VIRTUAL_TEXT_SIZE = 1000;
 	const PREVIEW_GAP = 24;
 
 	let containerWidth = $state(0);
@@ -94,24 +94,39 @@
 		if (!item) return 0;
 		if (item.type === 'static' || item.duration === 0) return 0;
 
-		const { textWidth, initialOffset } = calcMetrics(item.content, VIRTUAL_TEXT_SIZE, virtualWidth);
-		const distance = textWidth + virtualWidth;
-
-		let speed: number;
-		let cycleDuration: number;
+		// initialOffset は本家 text::calc_text_offset と同じ（= text_offset）
+		const { initialOffset } = calcMetrics(item.content, VIRTUAL_TEXT_SIZE, virtualWidth);
+		const localTime = currentTime - item.start;
 
 		if (item.isLoop) {
-			speed = 440; // 500px/s 固定
-			cycleDuration = distance / speed;
-		} else {
-			speed = distance / item.duration;
-			cycleDuration = item.duration;
+			// 本家 nex-board の LoopingText を再現（text_spawner.rs / main.rs text_loop）
+			//   text_width   = text_offset * 2          （概算テキスト幅）
+			//   初回スポーン = window_width/2 + text_width/2 + 50
+			//   2周目以降    = original_x (= text_offset)
+			//   リセット条件 = text_left_edge < 0
+			//                = x + (text_width + window_width)/2 + 5 < 0
+			//   loop_speed   = 500px/s 固定
+			const LOOP_SPEED = 500;
+			const textWidth = initialOffset * 2;
+			const startX = /*virtualWidth / 2*/ +textWidth / 2;
+			const originalX = initialOffset;
+			const resetThreshold = -((textWidth + virtualWidth) / 2 + 5);
+			const firstCycleDistance = startX - resetThreshold;
+			const cycleDistance = originalX - resetThreshold;
+
+			const traveled = LOOP_SPEED * localTime;
+			if (traveled < firstCycleDistance) {
+				return startX - traveled;
+			}
+			const rem = (traveled - firstCycleDistance) % cycleDistance;
+			return originalX - rem;
 		}
 
-		const localTime = currentTime - item.start;
-		const timeToUse = item.isLoop ? localTime % cycleDuration : localTime;
-
-		return initialOffset - speed * timeToUse;
+		// 通常スクロール: 本家 calc_speed(text_offset * 2, duration, window_width)
+		//   = (text_offset * 2 + window_width) / duration
+		//   = (2 * initialOffset + virtualWidth) / duration
+		const speed = (2 * initialOffset + virtualWidth) / item.duration;
+		return initialOffset - speed * localTime;
 	}
 
 	let subX = $derived(calcCurrentX(currentSubItem, clock.time, SUB_VIRTUAL_WIDTH));
@@ -140,7 +155,7 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class="ticker-text font-ipa font-bold text-yellow-300"
+					class="ticker-text font-bold text-yellow-300"
 					style:visibility={currentSubItem ? 'visible' : 'hidden'}
 					style:transform="translate(calc(-50% + {subX}px), -50%)"
 					style:font-size="{VIRTUAL_TEXT_SIZE}px"
@@ -175,6 +190,10 @@
 </div>
 
 <style>
+	@font-face {
+		font-family: 'IPAGothic';
+		src: local('../../../static/fonts/ipag.ttf') format('truetype');
+	}
 	.multi-monitor-previewer {
 		display: flex;
 		flex-direction: column;
@@ -222,6 +241,7 @@
 		display: flex;
 		height: auto;
 		align-items: center;
+		font-family: 'IPAGothic';
 		top: 50%;
 		left: 50%;
 		white-space: nowrap;
