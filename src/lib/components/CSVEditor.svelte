@@ -51,7 +51,7 @@
 		<table class="w-full p-5 pt-0">
 			<thead class="sticky top-10 z-10 bg-gray-200 shadow-sm">
 				<tr>
-					<th colspan="6" class="border py-1">電光掲示板</th>
+					<th colspan="7" class="border py-1">電光掲示板</th>
 					<th colspan="8" class="border py-1">ステージ照明</th>
 				</tr>
 				<tr>
@@ -60,6 +60,7 @@
 					<th class="border py-1">表示時間</th>
 					<th class="border py-1">モニター</th>
 					<th class="border py-1">表示形式</th>
+					<th class="border py-1">文字色</th>
 					<th class="border py-1">内容</th>
 					<th class="border py-1">左サイド</th>
 					<th class="border py-1">バック1</th>

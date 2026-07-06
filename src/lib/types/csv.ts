@@ -5,6 +5,7 @@ export interface Row {
 	duration: string;
 	monitor: string;
 	type: string;
+	color: string;
 	content: string;
 	left: string;
 	backOne: string;
