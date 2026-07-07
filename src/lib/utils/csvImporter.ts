@@ -15,7 +15,7 @@ export function parseEditCSV(file: File): Promise<Row[]> {
 					duration: row.duration || '',
 					monitor: row.monitor || '',
 					type: row.type || '',
-					color: row.type || '',
+					color: row.color ?? '#fde047',
 					content: row.content || '',
 					right: row.right || '',
 					backOne: row.backOne || '',
