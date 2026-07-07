@@ -155,7 +155,8 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class={`ticker-text font-ipa font-bold ${currentSubItem?.color != '' ? currentSubItem?.color : 'text-yellow-300'}`}
+					class="ticker-text font-ipa font-bold"
+					style:color={currentSubItem?.color}
 					style:visibility={currentSubItem ? 'visible' : 'hidden'}
 					style:transform="translate(calc(-50% + {subX}px), -50%)"
 					style:font-size="{VIRTUAL_TEXT_SIZE}px"
@@ -177,8 +178,8 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class={`ticker-text font-ipa font-bold ${currentMainItem?.color != '' ? currentMainItem?.color : 'text-yellow-300'}`}
-					style:visibility={currentMainItem ? 'visible' : 'hidden'}
+					class="ticker-text font-ipa font-bold"
+					style:color={currentMainItem?.color}
 					style:transform="translate(calc(-50% + {mainX}px), -50%)"
 					style:font-size="{VIRTUAL_TEXT_SIZE}px"
 				>
