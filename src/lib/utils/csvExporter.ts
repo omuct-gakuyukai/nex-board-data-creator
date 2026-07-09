@@ -7,6 +7,7 @@ export function generateCSVFiles(rows: Row[]) {
 		duration: row.duration,
 		monitor: row.monitor,
 		type: row.type,
+		color: row.color,
 		content: row.content,
 		left: row.left,
 		backOne: row.backOne,
