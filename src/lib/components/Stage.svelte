@@ -18,7 +18,9 @@
 
 	let activeColors = $derived.by(() => {
 		const time = clock.time;
-		const sorted = [...editorState.rows].sort((a, b) => parseFloat(a.start) - parseFloat(b.start));
+		const sorted = [...editorState.rows].sort(
+			(a, b) => (parseFloat(a.start) || 0) - (parseFloat(b.start) || 0)
+		);
 
 		// 現在より前の行のみ抽出
 		const pastRows = sorted.filter((row) => parseFloat(row.start) <= time);

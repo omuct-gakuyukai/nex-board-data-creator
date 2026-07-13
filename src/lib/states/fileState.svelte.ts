@@ -1,21 +1,20 @@
 import { editorState } from './editorState.svelte';
-import { parseFileName } from '$lib/utils/fileNameparser';
+import { hasValidFileNamePart, parseFileName } from '$lib/utils/fileNameparser';
 import { parseEditCSV } from '$lib/utils/csvImporter';
 import { downloadAllFiles } from '$lib/utils/csvExporter';
 
 class FileState {
 	async importCSV(file: File) {
 		const parsed = parseFileName(file.name);
-		console.log('Parsed:', parsed);
+		console.log('File name parsed:', parsed);
 
+		const rows = await parseEditCSV(file);
+		editorState.rows = rows;
 		if (parsed) {
 			editorState.groupName = parsed.groupName;
 			editorState.songName = parsed.songName;
 			console.log('Updated State:', editorState.groupName, editorState.songName);
 		}
-
-		const rows = await parseEditCSV(file);
-		editorState.rows = rows;
 	}
 
 	exportCSV() {
@@ -25,9 +24,8 @@ class FileState {
 			return;
 		}
 
-		// 2. 不正文字チェック（追加）
-		const hasInvalidChar = /[^a-zA-Z0-9_().-]/;
-		if (hasInvalidChar.test(editorState.groupName) || hasInvalidChar.test(editorState.songName)) {
+		// 2. 不正文字チェック
+		if (hasValidFileNamePart(editorState.groupName) || hasValidFileNamePart(editorState.songName)) {
 			alert('ファイル名に使用できない文字が含まれています。赤枠のエラーを修正してください。');
 			return;
 		}

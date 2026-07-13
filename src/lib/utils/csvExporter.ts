@@ -4,6 +4,7 @@ import type { Row } from '$lib/types/csv';
 export function generateCSVFiles(rows: Row[]) {
 	const csvRows = rows.map((row) => ({
 		start: row.start,
+		lyric: row.lyric,
 		duration: row.duration,
 		monitor: row.monitor,
 		type: row.type,
@@ -40,7 +41,7 @@ export function downloadFile(content: string, filename: string) {
 
 export function downloadAllFiles(rows: Row[], groupName: string, songName: string) {
 	const csvFiles = generateCSVFiles(rows);
-	const baseFileName = `${groupName}_${songName}`;
+	const baseFileName = `${groupName}__${songName}`;
 
-	setTimeout(() => downloadFile(csvFiles.csv, `${baseFileName}.csv`), 0);
+	downloadFile(csvFiles.csv, `${baseFileName}.csv`);
 }

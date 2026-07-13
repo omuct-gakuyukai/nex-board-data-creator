@@ -50,7 +50,10 @@
 		bind:value={youtubeUrl}
 		class="rounded border px-3 py-2"
 	/>
-	<button onclick={handleSubmit} class="rounded bg-red-500 px-3 py-2 font-bold text-white">
+	<button
+		onclick={handleSubmit}
+		class="cursor-pointer rounded bg-red-500 px-3 py-2 font-bold text-white"
+	>
 		YouTube を読み込む
 	</button>
 

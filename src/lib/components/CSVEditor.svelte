@@ -36,7 +36,7 @@
 		if (column === 'type') {
 			if (row.type === 'static') {
 				row.duration = '0';
-			} else if (row.type === 'loop' || row.type === 'roop') {
+			} else if (row.type === 'loop') {
 				row.duration = '1200';
 			}
 		}
@@ -79,13 +79,21 @@
 						class={editorState.focusedIndex === rowIndex ? 'bg-blue-100' : ''}
 					>
 						{#each editorState.columns as column (column)}
-							{#if column == 'start' || column == 'lyric' || column == 'duration' || column == 'content'}
-								{@const isDurationDisabled =
-									column === 'duration' &&
-									(row.type === 'static' || row.type === 'loop' || row.type === 'roop')}
+							{#if column == 'lyric' || column == 'content'}
 								<td class={`${column != 'content' && column != 'lyric' ? 'w-22' : ''} border p-1`}>
 									<input
 										bind:value={row[column]}
+										placeholder={`${placeHolder[column]}`}
+										class="w-full bg-transparent px-1 outline-0"
+									/>
+								</td>
+							{:else if column == 'start' || column == 'duration'}
+								{@const isDurationDisabled =
+									column === 'duration' && (row.type === 'static' || row.type === 'loop')}
+								<td class="w-18 border p-1">
+									<input
+										bind:value={row[column]}
+										type="number"
 										placeholder={`${placeHolder[column]}`}
 										disabled={isDurationDisabled}
 										class="w-full bg-transparent px-1 outline-0 disabled:cursor-not-allowed disabled:opacity-50"
@@ -97,7 +105,7 @@
 										name={column}
 										bind:value={row[column]}
 										id={`${column}-${row.id}-select`}
-										class="bg-transparent outline-0"
+										class="cursor-pointer bg-transparent outline-0"
 										onchange={() => handleTypeChange(row, column)}
 									>
 										{#each Object.entries(options[column as keyof typeof options]) as [optKey, optLabel] (optKey)}
@@ -110,7 +118,7 @@
 									<select
 										name={column}
 										bind:value={row[column]}
-										class="bg-transparent outline-0"
+										class="cursor-pointer bg-transparent outline-0"
 										id={`${column}-${row.id}-select`}
 									>
 										{#each Object.entries(options[column as keyof typeof options]) as [optKey, optLabel] (optKey)}
@@ -118,8 +126,24 @@
 										{/each}
 									</select>
 								</td>
+							{:else if column == 'color'}
+								<td class="w-15 border p-0">
+									<div class="flex items-center justify-center gap-1 bg-transparent px-px py-0">
+										<div
+											class="relative h-6 w-6 rounded border border-gray-400"
+											style={`background-color: ${row[column] !== '' ? row[column] : 'transparent'};`}
+										>
+											<input
+												bind:value={row[column]}
+												type="color"
+												disabled={row[column] === ''}
+												class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+											/>
+										</div>
+									</div>
+								</td>
 							{:else}
-								<td class="w-20 border p-0">
+								<td class="w-18 border p-0">
 									<div class="flex items-center justify-center gap-1 bg-transparent px-px py-0">
 										<input
 											type="checkbox"

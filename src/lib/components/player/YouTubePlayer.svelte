@@ -25,6 +25,7 @@
 
 		return () => {
 			if (updateInterval) clearInterval(updateInterval);
+			if (editorState.playerState.playerRef === playerRef) editorState.playerState.playerRef = null;
 			playerRef?.destroy?.();
 		};
 	});

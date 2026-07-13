@@ -1,4 +1,5 @@
 import type { Row } from '$lib/types/csv';
+import { MediaUploader } from '$lib/utils/mediaUploader';
 import type { YTPlayer } from '$lib/utils/youtubeLoader';
 
 export interface MediaSource {
@@ -22,7 +23,12 @@ class PlayerState {
 	// プレイヤーリファレンス（video/audio 要素またはYouTube Player）
 	playerRef = $state<HTMLVideoElement | HTMLAudioElement | YTPlayer | null>(null);
 
-	setMediaSource(source: MediaSource) {
+	setMediaSource(source: MediaSource | null) {
+		if (this.mediaSource?.type === 'file') {
+			if (editorState.playerState.mediaSource?.fileUrl) {
+				MediaUploader.revokeBlobUrl(editorState.playerState.mediaSource?.fileUrl);
+			}
+		}
 		this.mediaSource = source;
 		this.currentTime = 0;
 		this.duration = 0;
@@ -116,12 +122,12 @@ class EditorState {
 			color: '#fde047',
 			content: '',
 			left: '',
-			backOne: '#000',
-			backTwo: '#000',
-			backThree: '#000',
-			backFour: '#000',
-			backFive: '#000',
-			backSix: '#000',
+			backOne: '',
+			backTwo: '',
+			backThree: '',
+			backFour: '',
+			backFive: '',
+			backSix: '',
 			right: ''
 		};
 	}
@@ -137,10 +143,12 @@ class EditorState {
 	}
 
 	deleteRow() {
-		if (this.focusedIndex !== null) {
-			this.rows.splice(this.focusedIndex, 1);
-			this.focusedIndex = null;
+		if (this.focusedIndex === null) return;
+		this.rows.splice(this.focusedIndex, 1);
+		if (this.rows.length === 0) {
+			this.rows.push(this.createEmptyRow());
 		}
+		this.focusedIndex = Math.min(this.focusedIndex, this.rows.length - 1);
 	}
 }
 export const editorState = new EditorState();

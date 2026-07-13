@@ -27,10 +27,11 @@
 		if (type === 'static') {
 			duration = 0;
 		} else if (type === 'loop') {
-			duration = 1200;
+			duration = 1200; // nex-boardの仕様に合わせる
 		}
 
-		const isLoop = duration >= 1000;
+		const isLoop = duration >= 1000; // nex-boardの仕様に合わせる
+		// 15分以上もの間スライド表示するようなものは現実的に無理
 		return { ...row, start, type, duration, content, isLoop };
 	}
 
@@ -99,16 +100,9 @@
 		const localTime = currentTime - item.start;
 
 		if (item.isLoop) {
-			// 本家 nex-board の LoopingText を再現（text_spawner.rs / main.rs text_loop）
-			//   text_width   = text_offset * 2          （概算テキスト幅）
-			//   初回スポーン = window_width/2 + text_width/2 + 50
-			//   2周目以降    = original_x (= text_offset)
-			//   リセット条件 = text_left_edge < 0
-			//                = x + (text_width + window_width)/2 + 5 < 0
-			//   loop_speed   = 500px/s 固定
 			const LOOP_SPEED = 500;
 			const textWidth = initialOffset * 2;
-			const startX = /*virtualWidth / 2*/ +textWidth / 2;
+			const startX = textWidth / 2; // 実機とは異なる実装だがこうしないと合わない
 			const originalX = initialOffset;
 			const resetThreshold = -((textWidth + virtualWidth) / 2 + 5);
 			const firstCycleDistance = startX - resetThreshold;
@@ -122,9 +116,6 @@
 			return originalX - rem;
 		}
 
-		// 通常スクロール: 本家 calc_speed(text_offset * 2, duration, window_width)
-		//   = (text_offset * 2 + window_width) / duration
-		//   = (2 * initialOffset + virtualWidth) / duration
 		const speed = (2 * initialOffset + virtualWidth) / item.duration;
 		return initialOffset - speed * localTime;
 	}
@@ -155,7 +146,7 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class="ticker-text font-ipa font-bold"
+					class="ticker-text font-bold"
 					style:color={currentSubItem?.color}
 					style:visibility={currentSubItem ? 'visible' : 'hidden'}
 					style:transform="translate(calc(-50% + {subX}px), -50%)"
@@ -178,8 +169,9 @@
 				style:transform="scale({globalScale})"
 			>
 				<div
-					class="ticker-text font-ipa font-bold"
+					class="ticker-text font-bold"
 					style:color={currentMainItem?.color}
+					style:visibility={currentMainItem ? 'visible' : 'hidden'}
 					style:transform="translate(calc(-50% + {mainX}px), -50%)"
 					style:font-size="{VIRTUAL_TEXT_SIZE}px"
 				>
@@ -193,7 +185,7 @@
 <style>
 	@font-face {
 		font-family: 'IPAGothic';
-		src: local('../../../static/fonts/ipag.ttf') format('truetype');
+		src: url('/fonts/ipag.ttf') format('truetype');
 	}
 	.multi-monitor-previewer {
 		display: flex;
