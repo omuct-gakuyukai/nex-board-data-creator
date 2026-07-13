@@ -3,7 +3,7 @@ export function parseFileName(filename: string): { groupName: string; songName: 
 		return null;
 	}
 
-	const baseName = filename.toLowerCase().replace(/\.csv$/i, '');
+	const baseName = filename.replace(/\.csv$/i, '').replace(/\.CSV$/i, '');
 
 	const lastUnderscoreIndex = baseName.lastIndexOf('__');
 	if (lastUnderscoreIndex === -1) {
@@ -20,7 +20,7 @@ export function parseFileName(filename: string): { groupName: string; songName: 
 	return { groupName, songName };
 }
 
-export function hasValidFileNamePart(s: string): boolean {
+export function hasInvalidFileNamePart(s: string): boolean {
 	const hasInvalidChar = /[^a-zA-Z0-9_().-]/;
 	return hasInvalidChar.test(s);
 }

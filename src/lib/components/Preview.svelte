@@ -19,8 +19,8 @@
 
 	// --- 2. 行データの共通パース関数 ---
 	function parseRow(row: (typeof editorState.rows)[0]) {
-		const start = parseFloat(row.start) || 0;
-		let duration = parseFloat(row.duration) || 0;
+		const start = row.start || 0;
+		let duration = row.duration || 0;
 		const type = row.type?.trim() || 'slide';
 		const content = row.content || '';
 

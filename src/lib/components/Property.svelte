@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { editorState } from '$lib/states/editorState.svelte';
-	import { hasValidFileNamePart } from '$lib/utils/fileNameparser';
+	import { hasInvalidFileNamePart } from '$lib/utils/fileNameparser';
 
 	const fileName = $derived(editorState.groupName + '__' + editorState.songName + '.csv');
 
 	// 許可されていない文字が含まれているか判定する（含まれていれば true）
-	const isGroupInvalid = $derived(hasValidFileNamePart(editorState.groupName));
-	const isSongInvalid = $derived(hasValidFileNamePart(editorState.songName));
+	const isGroupInvalid = $derived(hasInvalidFileNamePart(editorState.groupName));
+	const isSongInvalid = $derived(hasInvalidFileNamePart(editorState.songName));
 </script>
 
 <div class="flex items-start px-5 py-3">

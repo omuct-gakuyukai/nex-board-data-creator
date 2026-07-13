@@ -18,7 +18,7 @@ class PlayerState {
 	isPlaying = $state(false);
 	currentTime = $state(0); // 秒単位
 	duration = $state(0); // 秒単位
-	volume = $state(0.8);
+	volume = $state(1);
 
 	// プレイヤーリファレンス（video/audio 要素またはYouTube Player）
 	playerRef = $state<HTMLVideoElement | HTMLAudioElement | YTPlayer | null>(null);
@@ -114,9 +114,9 @@ class EditorState {
 	private createEmptyRow(): Row {
 		return {
 			id: crypto.randomUUID(),
-			start: '',
+			start: 0,
 			lyric: '',
-			duration: '',
+			duration: 0,
 			monitor: '',
 			type: '',
 			color: '#fde047',

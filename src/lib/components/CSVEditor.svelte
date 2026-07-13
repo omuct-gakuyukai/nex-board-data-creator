@@ -35,9 +35,9 @@
 	function handleTypeChange(row: (typeof editorState.rows)[0], column: string) {
 		if (column === 'type') {
 			if (row.type === 'static') {
-				row.duration = '0';
+				row.duration = 0;
 			} else if (row.type === 'loop') {
-				row.duration = '1200';
+				row.duration = 1200;
 			}
 		}
 	}

@@ -27,9 +27,9 @@ export function parseEditCSV(file: File): Promise<Row[]> {
 
 				const eRows = editorState.rows[0];
 				if (
-					eRows.start === '' ||
+					eRows.start === 0 ||
 					eRows.lyric === '' ||
-					eRows.duration === '' ||
+					eRows.duration === 0 ||
 					eRows.monitor === '' ||
 					eRows.type === '' ||
 					eRows.color === '#fde047' ||
@@ -93,16 +93,12 @@ export function parseEditCSV(file: File): Promise<Row[]> {
 					return;
 				}
 
-				if (results.errors.length > 0) {
-					reject(new CSVError('CSV_DATA_ERROR', 'CSVファイルが破損しています'));
-				}
-
 				const rows = results.data as Row[];
 				const validRows = rows.map((row) => ({
 					id: row.id || crypto.randomUUID(),
-					start: row.start || '',
+					start: row.start || 0,
 					lyric: row.lyric || '',
-					duration: row.duration || '',
+					duration: row.duration || 0,
 					monitor: row.monitor || '',
 					type: row.type || '',
 					color: row.color || '#fde047',

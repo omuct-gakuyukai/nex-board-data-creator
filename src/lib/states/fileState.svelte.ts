@@ -1,5 +1,5 @@
 import { editorState } from './editorState.svelte';
-import { hasValidFileNamePart, parseFileName } from '$lib/utils/fileNameparser';
+import { hasInvalidFileNamePart, parseFileName } from '$lib/utils/fileNameparser';
 import { parseEditCSV } from '$lib/utils/csvImporter';
 import { downloadAllFiles } from '$lib/utils/csvExporter';
 
@@ -25,7 +25,10 @@ class FileState {
 		}
 
 		// 2. 不正文字チェック
-		if (hasValidFileNamePart(editorState.groupName) || hasValidFileNamePart(editorState.songName)) {
+		if (
+			hasInvalidFileNamePart(editorState.groupName) ||
+			hasInvalidFileNamePart(editorState.songName)
+		) {
 			alert('ファイル名に使用できない文字が含まれています。赤枠のエラーを修正してください。');
 			return;
 		}

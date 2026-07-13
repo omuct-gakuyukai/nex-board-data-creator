@@ -29,3 +29,5 @@ storybook-static
 
 # Temporary files
 /tmp
+
+.claude
