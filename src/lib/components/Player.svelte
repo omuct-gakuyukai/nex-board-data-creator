@@ -12,13 +12,13 @@
 <div class="my-2 h-45 w-80 rounded border border-gray-300">
 	<div class="flex border-b bg-gray-100">
 		<button
-			class={`flex-1 px-3 py-2 ${sourceMode === 'youtube' ? 'border-b-2 border-red-500 font-bold outline-0' : ''}`}
+			class={`flex-1 cursor-pointer px-3 py-2 ${sourceMode === 'youtube' ? 'border-b-2 border-red-500 font-bold outline-0' : ''}`}
 			onclick={() => (sourceMode = 'youtube')}
 		>
 			YouTube
 		</button>
 		<button
-			class={`flex-1 px-3 py-2 ${sourceMode === 'file' ? 'border-b-2 border-blue-500 font-bold outline-0' : ''}`}
+			class={`flex-1 cursor-pointer px-3 py-2 ${sourceMode === 'file' ? 'border-b-2 border-blue-500 font-bold outline-0' : ''}`}
 			onclick={() => (sourceMode = 'file')}
 		>
 			ファイル
@@ -48,20 +48,31 @@
 		{/if}
 	</div>
 
+	<div
+		class={`mt-1 w-full border-t ${editorState.playerState.mediaSource === null ? 'hidden' : 'flex'}`}
+	>
+		<button
+			class="mx-auto my-1 cursor-pointer rounded-lg bg-blue-300 px-3 text-center"
+			onclick={() => editorState.playerState.setMediaSource(null)}
+		>
+			現在のソースを削除
+		</button>
+	</div>
+
 	<!-- 再生コントロール -->
 	{#if playerState.mediaSource}
 		<div class="flex gap-2 border-t bg-gray-50 p-2">
 			<button
 				onclick={() => playerState.play()}
 				disabled={playerState.isPlaying}
-				class="rounded bg-green-500 px-2 py-1 text-white disabled:opacity-50"
+				class="cursor-pointer rounded bg-green-500 px-2 py-1 text-white disabled:opacity-50"
 			>
 				▶
 			</button>
 			<button
 				onclick={() => playerState.pause()}
 				disabled={!playerState.isPlaying}
-				class="rounded bg-orange-500 px-2 py-1 text-white disabled:opacity-50"
+				class="cursor-pointer rounded bg-orange-500 px-2 py-1 text-white disabled:opacity-50"
 			>
 				⏸
 			</button>
@@ -83,7 +94,7 @@
 					type="range"
 					min="0"
 					max="100"
-					value="100"
+					value={playerState.volume * 100}
 					oninput={(e) => {
 						const volume = +(e.target as HTMLInputElement).value;
 						const ref = playerState.playerRef;
@@ -93,6 +104,7 @@
 						} else if (ref && 'volume' in ref) {
 							ref.volume = volume / 100;
 						}
+						playerState.volume = volume;
 					}}
 					class="w-20"
 				/>

@@ -18,10 +18,10 @@
 
 	let activeColors = $derived.by(() => {
 		const time = clock.time;
-		const sorted = [...editorState.rows].sort((a, b) => parseFloat(a.start) - parseFloat(b.start));
+		const sorted = [...editorState.rows].sort((a, b) => (a.start || 0) - (b.start || 0));
 
 		// 現在より前の行のみ抽出
-		const pastRows = sorted.filter((row) => parseFloat(row.start) <= time);
+		const pastRows = sorted.filter((row) => row.start <= time);
 
 		// 各列ごとに「最後に色が入力されていた値」を探す
 		const latestColors: Record<string, string> = {};

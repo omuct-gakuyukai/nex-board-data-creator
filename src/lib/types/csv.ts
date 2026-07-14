@@ -1,8 +1,8 @@
 export interface Row {
 	id: string;
-	start: string;
+	start: number;
 	lyric: string;
-	duration: string;
+	duration: number;
 	monitor: string;
 	type: string;
 	color: string;
