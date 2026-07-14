@@ -1,42 +1,55 @@
-# sv
+# Project Name
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+大阪公立大学工業高等専門学校の高専祭におけるステージイベント向けに、[Nex-Board](https://github.com/nex-board/nex-board)とステージ照明用の演出資料を作成するアプリケーション
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- SvelteKit
+- Svelte 5
+- TypeScript
+- Vite
 
-```sh
-# create a new project
-npx sv create my-app
+---
+
+## Requirements
+
+- Node.js >= 20
+- bun
+
+---
+
+## Getting Started
+
+### Install
+
+```bash
+bun install
 ```
 
-To recreate this project with the same configuration:
+### Development
 
-```sh
-# recreate this project
-pnpm dlx sv@0.15.1 create --template minimal --types ts --add eslint prettier tailwindcss="plugins:none" storybook vitest="usages:unit,component" --install pnpm nexboard-creator
+```bash
+bun run dev
 ```
 
-## Developing
+ブラウザで
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```
+http://localhost:5173
 ```
 
-## Building
+を開きます。
 
-To create a production version of your app:
+---
 
-```sh
-npm run build
-```
+## Available Scripts
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | 開発サーバー起動 |
+| `bun run build` | 本番ビルド |
+| `bun run preview` | ビルド結果をローカルで確認 |
+| `bun run check` | 型チェック |
+| `bun run lint` | Lint |
+| `bun run format` | コードフォーマット |
+| `bun run test` | テスト |
