@@ -6,6 +6,7 @@
 	import Property from '$lib/components/Property.svelte';
 	import Stage from '$lib/components/Stage.svelte';
 	import Timer from '$lib/components/Timer.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 </script>
 
 <Header />
@@ -22,4 +23,8 @@
 		<Player />
 	</div>
 	<CSVEditor />
+</div>
+
+<div class="mt-auto">
+	<Footer />
 </div>
