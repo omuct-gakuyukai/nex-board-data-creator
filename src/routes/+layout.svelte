@@ -1,7 +1,6 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import Footer from '$lib/components/Footer.svelte';
 
 	let { children } = $props();
 </script>
@@ -10,5 +9,4 @@
 
 <main class="flex min-h-screen flex-col">
 	{@render children()}
-	<Footer />
 </main>
