@@ -11,7 +11,7 @@
 	}
 </script>
 
-<div class="my-3 mr-15 ml-auto flex rounded-xl bg-gray-200 px-5 py-2 font-mono text-xl">
+<div class="my-2 mr-15 ml-auto flex rounded-xl bg-gray-200 px-5 py-2 font-mono text-xl">
 	<div class="my-auto mr-5 text-base text-gray-600">再生時間</div>
 	<div class="flex flex-col">
 		<div class="text-xl">

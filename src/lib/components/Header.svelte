@@ -45,17 +45,17 @@
 	}
 </script>
 
-<header class="flex bg-blue-400 px-6 py-3">
-	<h2 class="text-4xl font-bold">DataCreator for Nex-Board</h2>
+<header class="flex bg-blue-400 px-6 py-2">
+	<h2 class="text-3xl font-bold">DataCreator for Nex-Board</h2>
 	<input type="file" accept=".csv" onchange={handleImport} id="import-csv" hidden />
 	<button
 		onclick={() => document.getElementById('import-csv')?.click()}
-		class="ml-auto cursor-pointer rounded-lg bg-blue-300 p-2 text-xl"
+		class="ml-auto h-fit cursor-pointer rounded-lg bg-blue-300 px-2 py-1 text-lg"
 	>
 		Import CSV
 	</button>
 	<button
-		class="ml-7 h-11 w-11 cursor-pointer rounded-full border-2 bg-white text-3xl transition-colors hover:bg-green-300"
+		class="ml-7 h-9 w-9 cursor-pointer rounded-full border-2 bg-white text-2xl transition-colors hover:bg-green-300"
 		onclick={() => {
 			showHint = true;
 		}}
@@ -63,7 +63,7 @@
 		?
 	</button>
 	<button
-		class="ml-4 h-11 w-11 cursor-pointer rounded-full border-2 bg-white text-3xl transition-colors hover:bg-yellow-300"
+		class="ml-4 h-9 w-9 cursor-pointer rounded-full border-2 bg-white text-2xl transition-colors hover:bg-yellow-300"
 		onclick={() => {
 			showWarning = true;
 		}}
@@ -72,7 +72,7 @@
 	</button>
 	<button
 		onclick={() => fileState.exportCSV()}
-		class="ml-8 cursor-pointer rounded-lg bg-green-400 p-2 text-xl"
+		class="ml-8 h-fit cursor-pointer rounded-lg bg-green-400 px-2 py-1 text-lg"
 	>
 		Download CSV files
 	</button>
@@ -84,6 +84,7 @@
 	}}
 >
 	<h2 class="mb-1 text-3xl">How to use</h2>
+	<h3 class="mb-1 text-xl font-bold text-red-600">このアプリは全画面で使用してください</h3>
 	<div class="flex">
 		<div>
 			<ul class="list-decimal px-5 py-2">
@@ -168,6 +169,9 @@
 			ボタンからファイルをダウンロードするようにしてください。
 		</li>
 		<li class="py-1">
+			このアプリは全画面表示を前提に作成されています。全画面表示でご利用ください。
+		</li>
+		<li class="py-1">
 			グループ名、曲名には半角英数字と半角丸括弧、半角ハイフン、半角アンダーバー、半角ピリオドのみ使用可能です。英語ではないグループ名や曲名についてはローマ字に直してください。またグループ名や曲名に使用できない記号が含まれる場合は省略してください。
 		</li>
 		<li class="py-1">
@@ -182,12 +186,12 @@
 		</li>
 		<li class="py-1">
 			使い方は
-			<span class=" mx-1 rounded-full border-2 bg-white px-2 text-2xl"> ? </span>
+			<span class=" mx-1 h-9 w-9 rounded-full border-2 bg-white px-2.5 text-2xl"> ? </span>
 			ボタンから、この注意事項は
-			<span class=" mx-1 rounded-full border-2 bg-white px-1 py-0.5 font-mono text-2xl">
+			<span class=" mx-1 h-9 w-9 rounded-full border-2 bg-white px-1.5 py-0.5 font-mono text-2xl">
 				&#9888;
 			</span>
-			ボタンから確認できます。
+			ボタンから確認できます。 使用前にご一読ください。
 		</li>
 	</ul>
 	<p class="font-bold">免責事項</p>

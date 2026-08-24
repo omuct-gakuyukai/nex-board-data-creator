@@ -2,7 +2,7 @@
 	import { editorState } from '$lib/states/editorState.svelte';
 </script>
 
-<div class="flex w-full gap-3 border-x border-t bg-gray-100 px-5 py-3">
+<div class="flex w-auto gap-3 border-x border-t bg-gray-100 px-5 py-3">
 	<button
 		onclick={() => editorState.addRow()}
 		type="button"
@@ -17,4 +17,5 @@
 	>
 		行を削除
 	</button>
+	<p class="p-1 text-lg">↓左右にスクロールできます。</p>
 </div>

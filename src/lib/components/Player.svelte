@@ -94,7 +94,7 @@
 					type="range"
 					min="0"
 					max="100"
-					value={playerState.volume * 100}
+					value={playerState.volume}
 					oninput={(e) => {
 						const volume = +(e.target as HTMLInputElement).value;
 						const ref = playerState.playerRef;

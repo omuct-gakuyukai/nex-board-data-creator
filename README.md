@@ -44,12 +44,12 @@ http://localhost:5173
 
 ## Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `bun run dev` | 開発サーバー起動 |
-| `bun run build` | 本番ビルド |
+| Command           | Description                |
+| ----------------- | -------------------------- |
+| `bun run dev`     | 開発サーバー起動           |
+| `bun run build`   | 本番ビルド                 |
 | `bun run preview` | ビルド結果をローカルで確認 |
-| `bun run check` | 型チェック |
-| `bun run lint` | Lint |
-| `bun run format` | コードフォーマット |
-| `bun run test` | テスト |
+| `bun run check`   | 型チェック                 |
+| `bun run lint`    | Lint                       |
+| `bun run format`  | コードフォーマット         |
+| `bun run test`    | テスト                     |
