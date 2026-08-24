@@ -1,4 +1,4 @@
-# Project Name
+# Nex-Board-Data-Creator
 
 大阪公立大学工業高等専門学校の高専祭におけるステージイベント向けに、[Nex-Board](https://github.com/nex-board/nex-board)とステージ照明用の演出資料を作成するアプリケーション
 
