@@ -25,6 +25,4 @@
 	<CSVEditor />
 </div>
 
-<div class="mt-auto">
-	<Footer />
-</div>
+<Footer />
