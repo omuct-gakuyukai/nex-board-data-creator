@@ -96,7 +96,7 @@
 		</div>
 
 		<div
-			class="flex w-full max-w-150 items-center justify-between border border-[#333] bg-[#111] px-2.5 pt-0 pb-5"
+			class="flex w-full max-w-150 items-center justify-between border border-[#333] bg-[#111] px-1.5 pt-0 pb-2"
 		>
 			<div class="flex flex-col items-center">
 				<div class="mb-2 text-sm text-white">左サイド</div>
