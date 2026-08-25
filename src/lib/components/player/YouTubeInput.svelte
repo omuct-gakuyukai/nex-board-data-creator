@@ -56,8 +56,4 @@
 	>
 		YouTube を読み込む
 	</button>
-
-	{#if youtubeUrl}
-		<p class="text-xs text-gray-600">例: https://www.youtube.com/watch?v=dQw4w9WgXcQ</p>
-	{/if}
 </div>

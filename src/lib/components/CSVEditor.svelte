@@ -43,33 +43,33 @@
 	}
 </script>
 
-<div class="relative flex max-h-105 w-full flex-col overflow-y-auto pl-5">
-	<div class="sticky top-0 z-10">
+<div class="relative ml-5 flex max-h-105 w-max flex-col overflow-auto">
+	<div class="sticky top-0 left-0 z-10 h-14 w-full">
 		<Toolbar />
 	</div>
-	<div class="scroll-m-t-lg relative w-full border-b border-gray-300">
-		<table class="w-full p-5 pt-0">
-			<thead class="sticky top-10 z-10 bg-gray-200 shadow-sm">
+	<div class="relative w-full border-b border-gray-300">
+		<table class="w-max border-separate border-spacing-0">
+			<thead class="sticky top-14 z-10 bg-gray-200">
 				<tr>
-					<th colspan="7" class="border py-1">電光掲示板</th>
-					<th colspan="8" class="border py-1">ステージ照明</th>
+					<th colspan="7" class="border-x border-y py-1">電光掲示板</th>
+					<th colspan="8" class="border-y border-r py-1">ステージ照明</th>
 				</tr>
 				<tr>
-					<th class="border py-1">開始時間</th>
-					<th class="border py-1">目安の歌詞</th>
-					<th class="border py-1">表示時間</th>
-					<th class="border py-1">モニター</th>
-					<th class="border py-1">表示形式</th>
-					<th class="border py-1">文字色</th>
-					<th class="border py-1">内容</th>
-					<th class="border py-1">左サイド</th>
-					<th class="border py-1">バック1</th>
-					<th class="border py-1">バック2</th>
-					<th class="border py-1">バック3</th>
-					<th class="border py-1">バック4</th>
-					<th class="border py-1">バック5</th>
-					<th class="border py-1">バック6</th>
-					<th class="border py-1">右サイド</th>
+					<th class="border-b border-l py-1">開始時間</th>
+					<th class="border-b border-l py-1">目安の歌詞</th>
+					<th class="border-b border-l py-1">表示時間</th>
+					<th class="border-b border-l py-1">モニター</th>
+					<th class="border-b border-l py-1">表示形式</th>
+					<th class="border-b border-l py-1">文字色</th>
+					<th class="border-b border-l py-1">内容</th>
+					<th class="border-b border-l py-1">左サイド</th>
+					<th class="border-b border-l py-1">バック1</th>
+					<th class="border-b border-l py-1">バック2</th>
+					<th class="border-b border-l py-1">バック3</th>
+					<th class="border-b border-l py-1">バック4</th>
+					<th class="border-b border-l py-1">バック5</th>
+					<th class="border-b border-l py-1">バック6</th>
+					<th class="border-x border-b py-1">右サイド</th>
 				</tr>
 			</thead>
 			<tbody class="bg-gray-300">
@@ -80,7 +80,7 @@
 					>
 						{#each editorState.columns as column (column)}
 							{#if column == 'lyric' || column == 'content'}
-								<td class={`${column != 'content' && column != 'lyric' ? 'w-22' : ''} border p-1`}>
+								<td class="w-100 border-b border-l p-1">
 									<input
 										bind:value={row[column]}
 										placeholder={`${placeHolder[column]}`}
@@ -90,7 +90,7 @@
 							{:else if column == 'start' || column == 'duration'}
 								{@const isDurationDisabled =
 									column === 'duration' && (row.type === 'static' || row.type === 'loop')}
-								<td class="w-18 border p-1">
+								<td class="w-18 border-b border-l p-1">
 									<input
 										bind:value={row[column]}
 										type="number"
@@ -100,7 +100,7 @@
 									/>
 								</td>
 							{:else if column == 'monitor' || column == 'type'}
-								<td class="w-20 border p-1">
+								<td class="w-20 border-b border-l p-1">
 									<select
 										name={column}
 										bind:value={row[column]}
@@ -114,7 +114,7 @@
 									</select>
 								</td>
 							{:else if column == 'left' || column == 'right'}
-								<td class="w-17 border p-1">
+								<td class={`w-17 ${column == 'right' ? 'border-x' : 'border-l'} border-b p-1`}>
 									<select
 										name={column}
 										bind:value={row[column]}
@@ -127,10 +127,10 @@
 									</select>
 								</td>
 							{:else if column == 'color'}
-								<td class="w-15 border p-0">
+								<td class="w-15 border-b border-l p-0">
 									<div class="flex items-center justify-center gap-1 bg-transparent px-px py-0">
 										<div
-											class="relative h-6 w-6 rounded border border-gray-400"
+											class="relative h-6 w-6 rounded border-b border-l border-gray-400"
 											style={`background-color: ${row[column] !== '' ? row[column] : 'transparent'};`}
 										>
 											<input
@@ -143,7 +143,7 @@
 									</div>
 								</td>
 							{:else}
-								<td class="w-18 border p-0">
+								<td class="w-18 border-b border-l p-0">
 									<div class="flex items-center justify-center gap-1 bg-transparent px-px py-0">
 										<input
 											type="checkbox"
@@ -162,7 +162,7 @@
 										/>
 
 										<div
-											class="relative h-6 w-6 rounded border border-gray-400"
+											class="relative h-6 w-6 rounded border-b border-l border-gray-400"
 											style={`background-color: ${row[column] !== '' ? row[column] : 'transparent'};`}
 										>
 											<input

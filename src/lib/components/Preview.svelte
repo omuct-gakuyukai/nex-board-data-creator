@@ -116,7 +116,8 @@
 			return originalX - rem;
 		}
 
-		const speed = (2 * initialOffset + virtualWidth) / item.duration;
+		const travelDistance = 2 * initialOffset;
+		const speed = travelDistance / item.duration;
 		return initialOffset - speed * localTime;
 	}
 

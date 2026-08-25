@@ -42,64 +42,66 @@
 	}
 </script>
 
-<div class="stage-wrapper">
-	<div class="stage-scene">
-		<div class="row back flex">
-			<div class="light-wrapper flex flex-col">
+<div class="h-50 rounded-2xl bg-[#0a0a0a] px-5 pt-5 pb-2.5">
+	<div class="flex flex-col items-center gap-1">
+		<div class="flex">
+			<div class="mx-0.5 flex flex-col">
 				<div
-					class="light"
+					class="h-10 w-10 rounded-full transition-all duration-200"
 					style:background={activeColors?.backOne}
 					style:box-shadow={getGlow(activeColors?.backOne || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />1</div>
+				<div class="mt-2 text-center text-sm text-white">バック1</div>
 			</div>
-			<div class="light-wrapper flex flex-col">
+			<div class="mx-0.5 flex flex-col">
 				<div
-					class="light"
+					class="h-10 w-10 rounded-full transition-all duration-200"
 					style:background={activeColors?.backTwo}
 					style:box-shadow={getGlow(activeColors?.backTwo || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />2</div>
+				<div class="mt-2 text-center text-sm text-white">バック2</div>
 			</div>
-			<div class="light-wrapper flex flex-col">
+			<div class="mx-0.5 flex flex-col">
 				<div
-					class="light"
+					class="h-10 w-10 rounded-full transition-all duration-200"
 					style:background={activeColors?.backThree}
 					style:box-shadow={getGlow(activeColors?.backThree || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />3</div>
+				<div class="mt-2 text-center text-sm text-white">バック3</div>
 			</div>
-			<div class="light-wrapper flex flex-col">
+			<div class="mx-0.5 flex flex-col">
 				<div
-					class="light"
+					class="h-10 w-10 rounded-full transition-all duration-200"
 					style:background={activeColors?.backFour}
 					style:box-shadow={getGlow(activeColors?.backFour || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />4</div>
+				<div class="mt-2 text-center text-sm text-white">バック4</div>
 			</div>
-			<div class="light-wrapper flex flex-col">
+			<div class="mx-0.5 flex flex-col">
 				<div
-					class="light"
+					class="h-10 w-10 rounded-full transition-all duration-200"
 					style:background={activeColors?.backFive}
 					style:box-shadow={getGlow(activeColors?.backFive || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />5</div>
+				<div class="mt-2 text-center text-sm text-white">バック5</div>
 			</div>
-			<div class="light-wrapper flex flex-col">
+			<div class="mx-0.5 flex flex-col">
 				<div
-					class="light"
+					class="h-10 w-10 rounded-full transition-all duration-200"
 					style:background={activeColors?.backSix}
 					style:box-shadow={getGlow(activeColors?.backSix || '')}
 				></div>
-				<div class="mt-2 text-center text-sm text-white">バック<br />6</div>
+				<div class="mt-2 text-center text-sm text-white">バック6</div>
 			</div>
 		</div>
 
-		<div class="floor flex">
+		<div
+			class="flex w-full max-w-150 items-center justify-between border border-[#333] bg-[#111] px-1.5 pt-0 pb-2"
+		>
 			<div class="flex flex-col items-center">
-				<div class="mb-2 text-white">左サイド</div>
+				<div class="mb-2 text-sm text-white">左サイド</div>
 				<div
-					class="light side"
+					class="h-10 w-10 rounded-lg transition-all duration-200"
 					style:background={`${activeColors.left === 'on' ? '#ffffff' : activeColors.left === 'off' ? '#000000' : ''}`}
 					style:box-shadow={getGlow(
 						activeColors.left === 'on' ? '#ffffff' : activeColors.left === 'off' ? '#000000' : ''
@@ -107,9 +109,9 @@
 				></div>
 			</div>
 			<div class="flex flex-col items-center">
-				<div class="mb-2 text-white">右サイド</div>
+				<div class="mb-2 text-sm text-white">右サイド</div>
 				<div
-					class="light side"
+					class="h-10 w-10 rounded-lg transition-all duration-200"
 					style:background={`${activeColors.right === 'on' ? '#ffffff' : activeColors.right === 'off' ? '#000000' : ''}`}
 					style:box-shadow={getGlow(
 						activeColors.right === 'on' ? '#ffffff' : activeColors.right === 'off' ? '#000000' : ''
@@ -119,60 +121,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	.stage-wrapper {
-		padding-top: 20px;
-		padding-right: 20px;
-		padding-left: 20px;
-		padding-bottom: 10px;
-		background: #0a0a0a;
-		border-radius: 16px;
-		height: 240px;
-	}
-
-	.stage-scene {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 20px;
-	}
-
-	.row {
-		display: flex;
-	}
-
-	.light-wrapper {
-		margin: 0;
-		margin-left: 2px;
-		margin-right: 2px;
-	}
-
-	.floor {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 100%;
-		max-width: 600px;
-		background: #111;
-		padding-left: 10px;
-		padding-right: 10px;
-		padding-top: 0px;
-		padding-bottom: 20px;
-		border: 1px solid #333;
-	}
-
-	.light {
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		transition:
-			background 0.2s,
-			box-shadow 0.2s;
-	}
-
-	.side {
-		/* 必要に応じて左右のライトの形状を変更 */
-		border-radius: 8px;
-	}
-</style>

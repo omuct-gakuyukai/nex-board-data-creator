@@ -1,12 +1,12 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import favicon from '$lib/assets/favicon.ico';
 
 	let { children } = $props();
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+<svelte:head><link rel="icon" href={favicon} /><title>Nex-Board-Data-Creator</title></svelte:head>
 
-<main class="flex min-h-screen flex-col">
+<main class="flex max-h-screen flex-col">
 	{@render children()}
 </main>
